@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CFP PCRR 2026</title>
-    <!-- Fontes: Cinzel para títulos institucionais e Montserrat para dados -->
+    
+    <!-- Configurações de PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#05070a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="brasao.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -32,31 +39,24 @@
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 50% -20%, var(--navy-light) 0%, var(--navy-deep) 80%);
+            background-image: radial-gradient(circle at 50% -20%, var(--navy-light) 0%, var(--navy-deep) 80%);
         }
 
-        /* Container Principal ajustado para Mobile */
         .app-container {
             width: 100%;
-            max-width: 500px; /* Largura ideal para Mobile */
+            max-width: 500px;
             padding: 2rem 1.5rem;
             text-align: center;
             animation: fadeIn 1s ease-out;
         }
 
-        /* Brasão Superior */
-        .brasao-wrapper {
-            margin-bottom: 1.5rem;
-        }
-
+        .brasao-wrapper { margin-bottom: 1.5rem; }
         .brasao {
             width: 140px;
             height: auto;
             filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2));
         }
 
-        /* Palavra FALTAM remodelada */
         .faltam-label {
             font-family: 'Cinzel', serif;
             font-size: 1.2rem;
@@ -68,7 +68,6 @@
             display: block;
         }
 
-        /* Grid do Cronômetro - 2x2 no Celular para melhor aproveitamento */
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -83,7 +82,6 @@
             border: 1px solid var(--border-gold);
             border-radius: 16px;
             padding: 1.5rem 0.5rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
         .number {
@@ -102,35 +100,24 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             color: rgba(255,255,255,0.5);
-            font-weight: 600;
         }
 
-        /* Frase Inferior */
         .target-phrase {
             font-family: 'Cinzel', serif;
             font-size: 0.95rem;
             line-height: 1.6;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #fff;
-            margin-bottom: 3rem;
-            padding: 0 10px;
+            margin-bottom: 2rem;
         }
 
-        /* Barra de Progresso Mobile */
-        .progress-container {
-            width: 100%;
-            padding: 0 10px;
-        }
-
+        .progress-container { width: 100%; padding: 0 10px; margin-bottom: 2rem;}
         .progress-label {
             display: flex;
             justify-content: space-between;
             font-size: 0.65rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
             color: var(--gold);
+            margin-bottom: 8px;
             font-weight: 600;
         }
 
@@ -139,7 +126,6 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .bar {
@@ -147,12 +133,32 @@
             width: 0%;
             background: linear-gradient(90deg, #1A365D, var(--gold));
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 1s ease-in-out;
         }
 
-        /* Rodapé Discreto */
+        /* Botão de Instalação Profissional */
+        #install-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin: 0 auto 2rem;
+            transition: all 0.3s;
+        }
+
+        #install-btn:active {
+            background: var(--gold);
+            color: var(--navy-deep);
+        }
+
         .footer-brand {
-            margin-top: 3rem;
             font-size: 0.6rem;
             letter-spacing: 3px;
             color: rgba(255,255,255,0.2);
@@ -164,13 +170,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Ajustes para Telas maiores (Desktop) */
         @media (min-width: 768px) {
             .app-container { max-width: 800px; }
             .countdown-grid { grid-template-columns: repeat(4, 1fr); }
-            .faltam-label { font-size: 1.5rem; }
             .number { font-size: 4rem; }
-            .brasao { width: 180px; }
         }
     </style>
 </head>
@@ -214,13 +217,13 @@
             </div>
         </div>
 
+        <button id="install-btn">Instalar Aplicativo</button>
+
         <div class="footer-brand">Comissão Oficial do Cadastro Reserva Da PCRR</div>
     </div>
 
     <script>
-        // Data alvo: 04 de Setembro de 2026 às 00:00
         const target = new Date('2026-09-04T00:00:00').getTime();
-        // Data base para progresso (Início de 2024)
         const start = new Date('2024-01-01T00:00:00').getTime();
 
         function updateCountdown() {
@@ -229,12 +232,7 @@
 
             if (diff <= 0) {
                 document.title = "O CFP COMEÇOU!";
-                document.body.innerHTML = `
-                    <div class='app-container'>
-                        <img src='brasao.png' class='brasao' style='width:150px; margin-bottom:2rem;'>
-                        <h1 style='font-family:Cinzel; color:var(--gold);'>O CFP PCRR COMEÇOU!</h1>
-                        <p style='margin-top:1rem; font-size:0.8rem; letter-spacing:2px;'>VALOR E LEALDADE</p>
-                    </div>`;
+                document.body.innerHTML = `<div class='app-container'><h1 style='color:var(--gold); font-family:Cinzel;'>O CFP PCRR COMEÇOU!</h1></div>`;
                 return;
             }
 
@@ -243,16 +241,12 @@
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            // Atualiza aba do navegador
             document.title = `Faltam ${d} dias | PCRR`;
-
-            // Atualiza interface
             document.getElementById('days').innerText = d.toString().padStart(2, '0');
             document.getElementById('hours').innerText = h.toString().padStart(2, '0');
             document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
             document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
 
-            // Progresso
             const total = target - start;
             const current = now - start;
             let percent = (current / total) * 100;
@@ -262,10 +256,32 @@
             document.getElementById('pct').innerText = percent.toFixed(2) + '%';
         }
 
-        // Atualiza a cada segundo
         setInterval(updateCountdown, 1000);
-        // Execução imediata
         updateCountdown();
+
+        // LÓGICA PWA: Registro do Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
+        // LÓGICA PWA: Botão de Instalação
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.style.display = 'none';
+                deferredPrompt = null;
+            }
+        });
     </script>
 </body>
 </html>
