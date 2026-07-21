@@ -44,11 +44,10 @@
             text-align: center;
         }
 
-        /* --- SPLASH SCREEN CORRIGIDA --- */
+        /* --- SPLASH SCREEN --- */
         #splash-screen {
             position: fixed;
-            top: 0; left: 0; 
-            width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--navy-black);
             display: flex;
             flex-direction: column;
@@ -56,7 +55,6 @@
             justify-content: center;
             z-index: 9999;
             transition: opacity 1s ease, visibility 1s;
-            text-align: center; /* Garante centralização do texto interno */
             padding: 20px;
         }
 
@@ -72,11 +70,10 @@
             font-family: 'Cinzel', serif;
             margin-top: 2rem;
             color: var(--gold);
-            letter-spacing: 2px; /* Reduzido levemente para não quebrar no mobile */
+            letter-spacing: 3px;
             text-transform: uppercase;
-            font-size: 1rem;
-            width: 100%; /* Força o bloco a ocupar a largura total para centralizar */
-            text-align: center;
+            font-size: 1.1rem;
+            width: 100%;
             opacity: 0;
             animation: fadeInText 2s forwards 0.5s;
         }
@@ -87,11 +84,9 @@
             100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
         }
 
-        @keyframes fadeInText {
-            to { opacity: 1; }
-        }
+        @keyframes fadeInText { to { opacity: 1; } }
 
-        /* --- FUNDO --- */
+        /* --- FUNDO TÁTICO --- */
         body::before {
             content: "";
             position: absolute;
@@ -175,17 +170,15 @@
             font-weight: 700;
         }
 
-        /* FRASE ALVO CORRIGIDA */
         .target-phrase {
             font-family: 'Cinzel', serif;
-            font-size: 1rem;
+            font-size: 1.1rem;
             line-height: 1.6;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--text-gray);
             margin-bottom: 3rem;
             width: 100%;
-            text-align: center; /* Força o centro no Mobile */
         }
 
         .progress-container { width: 100%; margin-bottom: 2.5rem; }
@@ -220,7 +213,7 @@
             background: rgba(212, 175, 55, 0.1);
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 10px 20px;
+            padding: 10px 24px;
             border-radius: 4px;
             font-family: 'Montserrat', sans-serif;
             font-size: 0.7rem;
@@ -246,17 +239,19 @@
             .number { font-size: 4.5rem; }
             .brasao { width: 220px; }
             .faltam-label { font-size: 1.4rem; letter-spacing: 12px; }
-            .target-phrase { font-size: 1.1rem; letter-spacing: 4px; }
+            .target-phrase { font-size: 1.3rem; letter-spacing: 5px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- TELA DE ENTRADA -->
     <div id="splash-screen">
         <img src="brasao.png" alt="PCRR" class="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
-        <h2 class="splash-text">A Turma Do Impossivel</h2>
+        <h2 class="splash-text">A turma do impossível</h2>
     </div>
 
+    <!-- CONTEÚDO PRINCIPAL -->
     <div class="app-container" id="main-content">
         <header class="brasao-wrapper">
             <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
@@ -283,7 +278,7 @@
             </div>
         </main>
 
-        <h2 class="target-phrase">Para o início da Aula Inaugural</h2>
+        <h2 class="target-phrase">A turma do impossível</h2>
 
         <div class="progress-container">
             <div class="progress-label">
@@ -323,7 +318,7 @@
             const diff = target - now;
 
             if (diff <= 0) {
-                document.getElementById('main-content').innerHTML = `<h1 style='color:var(--gold); font-family:Cinzel;'>CURSO INICIADO</h1>`;
+                document.getElementById('main-content').innerHTML = `<h1 style='color:var(--gold); font-family:Cinzel;'>MISSÃO INICIADA</h1>`;
                 return;
             }
 
@@ -346,8 +341,8 @@
             document.getElementById('pct').innerText = percent.toFixed(2) + '%';
         }
 
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
 
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
