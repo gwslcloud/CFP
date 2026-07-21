@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CFP PCRR 2026</title>
     
-    <!-- Configurações de PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#05070a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="brasao.png">
 
-    <!-- Fontes Táticas e Institucionais -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -41,16 +39,56 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
         }
 
-        /* 1. FUNDO TÁTICO: SPOTLIGHT + GRID */
+        /* --- ESTILO DA TELA DE ENTRADA (SPLASH) --- */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--navy-black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        .splash-brasao {
+            width: 200px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
+            animation: pulse-gold 2s infinite ease-in-out;
+        }
+
+        .splash-text {
+            font-family: 'Cinzel', serif;
+            margin-top: 2rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            opacity: 0;
+            animation: fadeInText 2s forwards 0.5s;
+        }
+
+        @keyframes pulse-gold {
+            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 50px rgba(212, 175, 55, 0.5)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
+        }
+
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+
+        /* --- FUNDO TÁTICO --- */
         body::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Efeito de micro-pontos táticos */
             background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
             background-size: 24px 24px;
             z-index: 1;
@@ -60,11 +98,11 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Holofote radial atrás do brasão */
             background: radial-gradient(circle at 50% 35%, var(--tactical-blue) 0%, var(--navy-black) 70%);
             z-index: 0;
         }
 
+        /* --- CONTEÚDO PRINCIPAL --- */
         .app-container {
             width: 100%;
             max-width: 600px;
@@ -72,33 +110,25 @@
             text-align: center;
             position: relative;
             z-index: 10;
-            animation: fadeIn 1.2s ease-out;
+            opacity: 0; /* Começa invisível para o reveal */
+            transition: opacity 1.5s ease;
         }
 
-        /* 2. BRASÃO RESTRUTURADO */
-        .brasao-wrapper {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
+        .brasao-wrapper { margin-bottom: 2rem; }
         .brasao {
-            width: 180px; /* Aumentado conforme solicitado */
+            width: 180px;
             height: auto;
             filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.25));
-            transition: transform 0.4s ease;
         }
 
-        /* 3. CONTRASTE DE TEXTO E TIPOGRAFIA */
         .faltam-label {
             font-family: 'Cinzel', serif;
             font-size: 1.4rem;
-            letter-spacing: 12px; /* Letter spacing alargado */
+            letter-spacing: 12px;
             text-transform: uppercase;
             color: var(--gold);
             margin-bottom: 1.5rem;
             font-weight: 700;
-            opacity: 0.9;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
         .countdown-grid {
@@ -108,35 +138,17 @@
             margin-bottom: 2.5rem;
         }
 
-        /* 4. CARDS GLASSMORPHISM COM BORDAS DOURADAS */
         .card {
             background: var(--glass);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--gold-muted); /* Borda fina dourada semi-transparente */
+            border: 1px solid var(--gold-muted);
             border-radius: 12px;
             padding: 1.8rem 0.5rem;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-
-        .card:hover {
-            border-color: var(--gold);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.1);
-        }
-
-        /* Efeito reflexivo no hover */
-        .card::before {
-            content: "";
-            position: absolute;
-            top: -100%; left: -100%;
-            width: 200%; height: 200%;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
-        }
-        .card:hover::before { top: 0; left: 0; }
 
         .number {
             display: block;
@@ -145,7 +157,6 @@
             line-height: 1;
             color: #fff;
             margin-bottom: 8px;
-            letter-spacing: -1px;
         }
 
         .unit {
@@ -162,14 +173,11 @@
             line-height: 1.8;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: var(--text-gray); /* Cinza claro com alta legibilidade */
-            margin-bottom: 3.5rem;
-            font-weight: 400;
+            color: var(--text-gray);
+            margin-bottom: 3rem;
         }
 
-        /* PROGRESSO TÁTICO */
         .progress-container { width: 100%; margin-bottom: 2.5rem; }
-        
         .progress-label {
             display: flex;
             justify-content: space-between;
@@ -177,7 +185,6 @@
             color: var(--gold);
             margin-bottom: 12px;
             font-weight: 700;
-            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
@@ -208,10 +215,8 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            font-weight: 700;
             cursor: pointer;
-            margin: 0 auto 2.5rem;
-            transition: 0.3s;
+            margin-bottom: 2.5rem;
         }
 
         .footer-brand {
@@ -220,14 +225,8 @@
             color: var(--text-gray);
             opacity: 0.6;
             text-transform: uppercase;
-            max-width: 80%;
+            max-width: 90%;
             margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (min-width: 768px) {
@@ -240,9 +239,16 @@
 </head>
 <body>
 
-    <div class="app-container">
+    <!-- TELA DE ENTRADA (SPLASH) -->
+    <div id="splash-screen">
+        <img src="brasao.png" alt="PCRR" class="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+        <h2 class="splash-text">Prepara a carcaça, aluno!</h2>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="app-container" id="main-content">
         <header class="brasao-wrapper">
-            <img src="brasao.png" alt="Brasão PCRR" class="brasao">
+            <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
         </header>
 
         <span class="faltam-label">Faltam</span>
@@ -289,13 +295,28 @@
         const target = new Date('2026-09-04T00:00:00').getTime();
         const start = new Date('2024-01-01T00:00:00').getTime();
 
+        // CONTROLE DO SPLASH SCREEN
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                const main = document.getElementById('main-content');
+                
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+                main.style.opacity = '1';
+                
+                // Ativar scroll apenas após o splash se necessário (opcional)
+                document.body.style.overflow = 'auto'; 
+            }, 3500); // Tempo de 3.5 segundos pulsando
+        });
+
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = target - now;
 
             if (diff <= 0) {
                 document.title = "MISSAO INICIADA";
-                document.body.innerHTML = `<div class='app-container'><h1 style='color:var(--gold); font-family:Cinzel; font-size:3rem;'>CURSO INICIADO</h1></div>`;
+                document.getElementById('main-content').innerHTML = `<h1 style='color:var(--gold); font-family:Cinzel; font-size:3rem;'>CURSO INICIADO</h1>`;
                 return;
             }
 
@@ -322,6 +343,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
+        // PWA
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
         let deferredPrompt;
