@@ -12,15 +12,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="brasao.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+    <!-- Fontes Táticas e Institucionais -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --gold: #D4AF37;
-            --gold-gradient: linear-gradient(180deg, #F3DFA2 0%, #D4AF37 100%);
-            --navy-deep: #05070a;
-            --navy-light: #0f172a;
+            --gold-bright: #F3DFA2;
+            --gold-muted: rgba(212, 175, 55, 0.4);
+            --navy-black: #05070a;
+            --tactical-blue: #0a1120;
+            --text-gray: #cbd5e1;
             --glass: rgba(255, 255, 255, 0.03);
-            --border-gold: rgba(212, 175, 55, 0.2);
         }
 
         * {
@@ -32,148 +35,206 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--navy-deep);
+            background-color: var(--navy-black);
             color: #fff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% -20%, var(--navy-light) 0%, var(--navy-deep) 80%);
+            position: relative;
+        }
+
+        /* 1. FUNDO TÁTICO: SPOTLIGHT + GRID */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Efeito de micro-pontos táticos */
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+            z-index: 1;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Holofote radial atrás do brasão */
+            background: radial-gradient(circle at 50% 35%, var(--tactical-blue) 0%, var(--navy-black) 70%);
+            z-index: 0;
         }
 
         .app-container {
             width: 100%;
-            max-width: 500px;
-            padding: 2rem 1.5rem;
+            max-width: 600px;
+            padding: 2.5rem 1.5rem;
             text-align: center;
-            animation: fadeIn 1s ease-out;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 1.2s ease-out;
         }
 
-        .brasao-wrapper { margin-bottom: 1.5rem; }
+        /* 2. BRASÃO RESTRUTURADO */
+        .brasao-wrapper {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
         .brasao {
-            width: 140px;
+            width: 180px; /* Aumentado conforme solicitado */
             height: auto;
-            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2));
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.25));
+            transition: transform 0.4s ease;
         }
 
+        /* 3. CONTRASTE DE TEXTO E TIPOGRAFIA */
         .faltam-label {
             font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            letter-spacing: 6px;
+            font-size: 1.4rem;
+            letter-spacing: 12px; /* Letter spacing alargado */
             text-transform: uppercase;
             color: var(--gold);
-            margin-bottom: 0.5rem;
-            font-weight: 400;
-            display: block;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            opacity: 0.9;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
         }
 
+        /* 4. CARDS GLASSMORPHISM COM BORDAS DOURADAS */
         .card {
             background: var(--glass);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-gold);
-            border-radius: 16px;
-            padding: 1.5rem 0.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--gold-muted); /* Borda fina dourada semi-transparente */
+            border-radius: 12px;
+            padding: 1.8rem 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+
+        .card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.1);
+        }
+
+        /* Efeito reflexivo no hover */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -100%; left: -100%;
+            width: 200%; height: 200%;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+        .card:hover::before { top: 0; left: 0; }
 
         .number {
             display: block;
-            font-size: 2.8rem;
-            font-weight: 800;
+            font-size: 3.2rem;
+            font-weight: 900;
             line-height: 1;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.3rem;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
         }
 
         .unit {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.5);
+            letter-spacing: 3px;
+            color: var(--gold);
+            font-weight: 700;
         }
 
         .target-phrase {
             font-family: 'Cinzel', serif;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            letter-spacing: 2px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            margin-bottom: 2rem;
+            color: var(--text-gray); /* Cinza claro com alta legibilidade */
+            margin-bottom: 3.5rem;
+            font-weight: 400;
         }
 
-        .progress-container { width: 100%; padding: 0 10px; margin-bottom: 2rem;}
+        /* PROGRESSO TÁTICO */
+        .progress-container { width: 100%; margin-bottom: 2.5rem; }
+        
         .progress-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: var(--gold);
-            margin-bottom: 8px;
-            font-weight: 600;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .track {
-            height: 6px;
+            height: 8px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            border-radius: 4px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #1A365D, var(--gold));
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            transition: width 1s ease-in-out;
+            background: linear-gradient(90deg, #1e293b, var(--gold));
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Botão de Instalação Profissional */
         #install-btn {
             display: none;
-            background: none;
+            background: rgba(212, 175, 55, 0.1);
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 12px 24px;
+            border-radius: 4px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            font-weight: 700;
             cursor: pointer;
-            margin: 0 auto 2rem;
-            transition: all 0.3s;
-        }
-
-        #install-btn:active {
-            background: var(--gold);
-            color: var(--navy-deep);
+            margin: 0 auto 2.5rem;
+            transition: 0.3s;
         }
 
         .footer-brand {
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             letter-spacing: 3px;
-            color: rgba(255,255,255,0.2);
+            color: var(--text-gray);
+            opacity: 0.6;
             text-transform: uppercase;
+            max-width: 80%;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @media (min-width: 768px) {
-            .app-container { max-width: 800px; }
+            .app-container { max-width: 850px; }
             .countdown-grid { grid-template-columns: repeat(4, 1fr); }
-            .number { font-size: 4rem; }
+            .number { font-size: 4.5rem; }
+            .brasao { width: 220px; }
         }
     </style>
 </head>
@@ -181,7 +242,7 @@
 
     <div class="app-container">
         <header class="brasao-wrapper">
-            <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+            <img src="brasao.png" alt="Brasão PCRR" class="brasao">
         </header>
 
         <span class="faltam-label">Faltam</span>
@@ -209,7 +270,7 @@
 
         <div class="progress-container">
             <div class="progress-label">
-                <span>Progresso até o Curso</span>
+                <span>Progresso Operacional</span>
                 <span id="pct">0.00%</span>
             </div>
             <div class="track">
@@ -217,9 +278,11 @@
             </div>
         </div>
 
-        <button id="install-btn">Instalar Aplicativo</button>
+        <button id="install-btn">Instalar Terminal</button>
 
-        <div class="footer-brand">Comissão Oficial do Cadastro Reserva Da PCRR</div>
+        <footer class="footer-brand">
+            Comissão Oficial do Cadastro Reserva da PCRR
+        </footer>
     </div>
 
     <script>
@@ -231,8 +294,8 @@
             const diff = target - now;
 
             if (diff <= 0) {
-                document.title = "O CFP COMEÇOU!";
-                document.body.innerHTML = `<div class='app-container'><h1 style='color:var(--gold); font-family:Cinzel;'>O CFP PCRR COMEÇOU!</h1></div>`;
+                document.title = "MISSAO INICIADA";
+                document.body.innerHTML = `<div class='app-container'><h1 style='color:var(--gold); font-family:Cinzel; font-size:3rem;'>CURSO INICIADO</h1></div>`;
                 return;
             }
 
@@ -259,27 +322,20 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // LÓGICA PWA: Registro do Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
-        // LÓGICA PWA: Botão de Instalação
         let deferredPrompt;
         const installBtn = document.getElementById('install-btn');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             installBtn.style.display = 'block';
         });
-
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') installBtn.style.display = 'none';
                 deferredPrompt = null;
+                installBtn.style.display = 'none';
             }
         });
     </script>
