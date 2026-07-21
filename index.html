@@ -39,14 +39,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+            text-align: center;
         }
 
-        /* --- ESTILO DA TELA DE ENTRADA (SPLASH) --- */
+        /* --- SPLASH SCREEN CORRIGIDA --- */
         #splash-screen {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
             background-color: var(--navy-black);
             display: flex;
             flex-direction: column;
@@ -54,10 +56,13 @@
             justify-content: center;
             z-index: 9999;
             transition: opacity 1s ease, visibility 1s;
+            text-align: center; /* Garante centralização do texto interno */
+            padding: 20px;
         }
 
         .splash-brasao {
-            width: 200px;
+            width: 180px;
+            max-width: 60%;
             height: auto;
             filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
             animation: pulse-gold 2s infinite ease-in-out;
@@ -67,9 +72,11 @@
             font-family: 'Cinzel', serif;
             margin-top: 2rem;
             color: var(--gold);
-            letter-spacing: 4px;
+            letter-spacing: 2px; /* Reduzido levemente para não quebrar no mobile */
             text-transform: uppercase;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            width: 100%; /* Força o bloco a ocupar a largura total para centralizar */
+            text-align: center;
             opacity: 0;
             animation: fadeInText 2s forwards 0.5s;
         }
@@ -84,7 +91,7 @@
             to { opacity: 1; }
         }
 
-        /* --- FUNDO TÁTICO --- */
+        /* --- FUNDO --- */
         body::before {
             content: "";
             position: absolute;
@@ -106,36 +113,40 @@
         .app-container {
             width: 100%;
             max-width: 600px;
-            padding: 2.5rem 1.5rem;
-            text-align: center;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             position: relative;
             z-index: 10;
-            opacity: 0; /* Começa invisível para o reveal */
+            opacity: 0;
             transition: opacity 1.5s ease;
         }
 
         .brasao-wrapper { margin-bottom: 2rem; }
         .brasao {
-            width: 180px;
+            width: 160px;
             height: auto;
             filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.25));
         }
 
         .faltam-label {
             font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
-            letter-spacing: 12px;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
             text-transform: uppercase;
             color: var(--gold);
             margin-bottom: 1.5rem;
             font-weight: 700;
+            width: 100%;
         }
 
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.2rem;
+            gap: 1rem;
             margin-bottom: 2.5rem;
+            width: 100%;
         }
 
         .card {
@@ -144,15 +155,12 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--gold-muted);
             border-radius: 12px;
-            padding: 1.8rem 0.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            padding: 1.5rem 0.5rem;
         }
 
         .number {
             display: block;
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 900;
             line-height: 1;
             color: #fff;
@@ -160,36 +168,39 @@
         }
 
         .unit {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             color: var(--gold);
             font-weight: 700;
         }
 
+        /* FRASE ALVO CORRIGIDA */
         .target-phrase {
             font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            letter-spacing: 4px;
+            font-size: 1rem;
+            line-height: 1.6;
+            letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--text-gray);
             margin-bottom: 3rem;
+            width: 100%;
+            text-align: center; /* Força o centro no Mobile */
         }
 
         .progress-container { width: 100%; margin-bottom: 2.5rem; }
         .progress-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--gold);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             font-weight: 700;
             text-transform: uppercase;
         }
 
         .track {
-            height: 8px;
+            height: 6px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 4px;
             overflow: hidden;
@@ -209,24 +220,24 @@
             background: rgba(212, 175, 55, 0.1);
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 4px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             cursor: pointer;
             margin-bottom: 2.5rem;
         }
 
         .footer-brand {
-            font-size: 0.7rem;
-            letter-spacing: 3px;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
             color: var(--text-gray);
             opacity: 0.6;
             text-transform: uppercase;
-            max-width: 90%;
-            margin: 0 auto;
+            width: 100%;
+            line-height: 1.5;
         }
 
         @media (min-width: 768px) {
@@ -234,18 +245,18 @@
             .countdown-grid { grid-template-columns: repeat(4, 1fr); }
             .number { font-size: 4.5rem; }
             .brasao { width: 220px; }
+            .faltam-label { font-size: 1.4rem; letter-spacing: 12px; }
+            .target-phrase { font-size: 1.1rem; letter-spacing: 4px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- TELA DE ENTRADA (SPLASH) -->
     <div id="splash-screen">
         <img src="brasao.png" alt="PCRR" class="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
         <h2 class="splash-text">Prepara a carcaça, aluno!</h2>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <div class="app-container" id="main-content">
         <header class="brasao-wrapper">
             <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
@@ -295,19 +306,16 @@
         const target = new Date('2026-09-04T00:00:00').getTime();
         const start = new Date('2024-01-01T00:00:00').getTime();
 
-        // CONTROLE DO SPLASH SCREEN
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 const main = document.getElementById('main-content');
-                
                 splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
-                main.style.opacity = '1';
-                
-                // Ativar scroll apenas após o splash se necessário (opcional)
-                document.body.style.overflow = 'auto'; 
-            }, 3500); // Tempo de 3.5 segundos pulsando
+                setTimeout(() => {
+                    splash.style.visibility = 'hidden';
+                    main.style.opacity = '1';
+                }, 1000);
+            }, 3500);
         });
 
         function updateCountdown() {
@@ -315,8 +323,7 @@
             const diff = target - now;
 
             if (diff <= 0) {
-                document.title = "MISSAO INICIADA";
-                document.getElementById('main-content').innerHTML = `<h1 style='color:var(--gold); font-family:Cinzel; font-size:3rem;'>CURSO INICIADO</h1>`;
+                document.getElementById('main-content').innerHTML = `<h1 style='color:var(--gold); font-family:Cinzel;'>CURSO INICIADO</h1>`;
                 return;
             }
 
@@ -335,7 +342,6 @@
             const current = now - start;
             let percent = (current / total) * 100;
             percent = Math.min(Math.max(percent, 0), 100);
-
             document.getElementById('bar').style.width = percent + '%';
             document.getElementById('pct').innerText = percent.toFixed(2) + '%';
         }
@@ -343,7 +349,6 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // PWA
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
         let deferredPrompt;
