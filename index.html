@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CFP PCRR 2026 - Contagem Regressiva</title>
-    <!-- Google Fonts: Montserrat para um peso institucional -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <title>CFP PCRR 2026 | Aula Inaugural</title>
+    <!-- Google Fonts: Montserrat para autoridade e sobriedade -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0d0f12;
-            --police-blue: #1A365D;
-            --gold: #E5C158;
-            --gold-light: #f3dfa2;
-            --text-white: #f8fafc;
-            --glass-bg: rgba(26, 54, 93, 0.25);
-            --glass-border: rgba(229, 193, 88, 0.3);
+            --police-blue: #0a192f;
+            --police-gold: #c5a059; /* Dourado extraído do brasão */
+            --gold-light: #e5c158;
+            --deep-black: #05070a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border-gold: rgba(197, 160, 89, 0.3);
         }
 
         * {
@@ -25,298 +24,259 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-dark);
+            background-color: var(--deep-black);
             background-image: 
-                radial-gradient(circle at top, rgba(26, 54, 93, 0.4) 0%, transparent 70%),
-                linear-gradient(180deg, #0d0f12 0%, #050608 100%);
-            color: var(--text-white);
+                radial-gradient(circle at top, var(--police-blue) 0%, transparent 70%),
+                linear-gradient(180deg, var(--deep-black) 0%, #000 100%);
+            color: #fff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
             padding: 20px;
+            overflow-x: hidden;
         }
 
-        /* Topo e Identidade */
+        /* Brasão com brilho sutil */
         .header {
             text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInDown 1s ease-out;
+            margin-bottom: 2.5rem;
+            animation: fadeIn 1.2s ease-out;
         }
 
         .brasao {
-            width: 150px;
+            width: 180px;
             height: auto;
             margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 15px rgba(229, 193, 88, 0.4));
-            transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 20px rgba(197, 160, 89, 0.25));
         }
 
-        .brasao:hover {
-            transform: scale(1.05);
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: 4px;
+        /* Frase Principal Dinâmica */
+        .main-headline {
             text-transform: uppercase;
-            background: linear-gradient(to bottom, #fff 0%, var(--gold) 100%);
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 1px;
+            max-width: 800px;
+            line-height: 1.2;
+            margin-bottom: 3rem;
+        }
+
+        .highlight-days {
+            display: block;
+            font-size: 3.5rem;
+            background: linear-gradient(to bottom, #fff 20%, var(--police-gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
+            margin-bottom: 5px;
         }
 
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--gold);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 400;
-            opacity: 0.9;
-        }
-
-        .motto {
-            font-style: italic;
-            color: #64748b;
-            margin-top: 1rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        /* Container da Contagem */
-        .countdown-wrapper {
+        /* Grid de Contagem */
+        .countdown-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+            gap: 1.2rem;
             width: 100%;
-            max-width: 900px;
+            max-width: 850px;
             margin-bottom: 4rem;
         }
 
-        .time-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-gold);
+            border-radius: 15px;
             padding: 2rem 1rem;
-            border-radius: 12px;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
         }
 
-        /* Brilho no topo do card */
-        .time-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--police-gold);
         }
 
-        .number {
+        .card .value {
             display: block;
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 700;
-            color: var(--text-white);
-            text-shadow: 0 0 20px rgba(229, 193, 88, 0.2);
+            color: var(--police-gold);
             line-height: 1;
         }
 
-        .label {
+        .card .label {
             display: block;
-            font-size: 0.75rem;
-            color: var(--gold);
+            margin-top: 8px;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-top: 0.5rem;
+            color: #94a3b8;
             font-weight: 700;
         }
 
-        /* Seção de Progresso */
-        .progress-section {
+        /* Barra de Progresso Estilizada */
+        .progress-box {
             width: 100%;
-            max-width: 700px;
-            text-align: center;
+            max-width: 650px;
+            background: rgba(0,0,0,0.3);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .progress-info {
+        .progress-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.8rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--gold-light);
+            align-items: center;
+            margin-bottom: 12px;
         }
 
-        .progress-container {
-            height: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50px;
-            border: 1px solid rgba(229, 193, 88, 0.2);
-            padding: 2px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        .progress-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--police-gold);
+            text-transform: uppercase;
+        }
+
+        #percent-text {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--police-blue) 0%, var(--gold) 100%);
-            border-radius: 50px;
-            box-shadow: 0 0 15px rgba(229, 193, 88, 0.5);
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            background: linear-gradient(90deg, #1A365D 0%, var(--police-gold) 100%);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+            transition: width 1s linear;
         }
 
-        /* Efeito de luz na barra */
-        .progress-bar::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(rgba(255,255,255,0.3), transparent);
-            border-radius: 50px;
+        /* Footer Motivacional */
+        .footer-text {
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            font-weight: 400;
         }
 
-        #finish-message {
-            display: none;
-            text-align: center;
-            font-size: 2rem;
-            color: var(--gold);
-            font-weight: 700;
-            animation: pulse 2s infinite;
-        }
-
-        /* Animações */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .countdown-wrapper {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-            h1 { font-size: 2rem; }
-            .number { font-size: 2.5rem; }
-            .brasao { width: 110px; }
-        }
-
-        @media (max-width: 480px) {
-            .countdown-wrapper {
-                grid-template-columns: 1fr 1fr;
-            }
+        /* Celular */
+        @media (max-width: 600px) {
+            .countdown-container { grid-template-columns: repeat(2, 1fr); }
+            .highlight-days { font-size: 2.5rem; }
+            .main-headline { font-size: 1.1rem; }
+            .card .value { font-size: 2.2rem; }
+            .brasao { width: 130px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <!-- O brasão deve estar na mesma pasta ou usar uma URL completa -->
-        <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b5/Bras%C3%A3o_da_PCRR.png'">
-        <h1>CFP PCRR 2026</h1>
-        <p class="subtitle">Curso de Formação Profissional</p>
-        <p class="motto">"Servir e Proteger"</p>
-    </header>
-
-    <main id="main-content">
-        <div class="countdown-wrapper">
-            <div class="time-card">
-                <span class="number" id="days">00</span>
-                <span class="label">Dias</span>
-            </div>
-            <div class="time-card">
-                <span class="number" id="hours">00</span>
-                <span class="label">Horas</span>
-            </div>
-            <div class="time-card">
-                <span class="number" id="minutes">00</span>
-                <span class="label">Minutos</span>
-            </div>
-            <div class="time-card">
-                <span class="number" id="seconds">00</span>
-                <span class="label">Segundos</span>
-            </div>
+    <div class="header">
+        <!-- O arquivo brasao.png deve estar no seu repositório -->
+        <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/vHCH4rU.png'">
+        
+        <div class="main-headline">
+            <span class="highlight-days" id="top-days">FALTAM -- DIAS</span>
+            Para a aula inaugural do CFP da PCRR
         </div>
-
-        <div class="progress-section">
-            <div class="progress-info">
-                <span>PROGRESSO ATÉ A POSSE</span>
-                <span id="percent-text">0.00%</span>
-            </div>
-            <div class="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
-            </div>
-        </div>
-    </main>
-
-    <div id="finish-message">
-        ORDEM E PROGRESSO. <br>
-        O CFP PCRR 2026 COMEÇOU! 👮‍♂️🔥
     </div>
 
+    <div class="countdown-container">
+        <div class="card">
+            <span class="value" id="days">00</span>
+            <span class="label">Dias</span>
+        </div>
+        <div class="card">
+            <span class="value" id="hours">00</span>
+            <span class="label">Horas</span>
+        </div>
+        <div class="card">
+            <span class="value" id="minutes">00</span>
+            <span class="label">Minutos</span>
+        </div>
+        <div class="card">
+            <span class="value" id="seconds">00</span>
+            <span class="label">Segundos</span>
+        </div>
+    </div>
+
+    <div class="progress-box">
+        <div class="progress-header">
+            <span class="progress-label">Progresso da Jornada</span>
+            <span id="percent-text">0.00%</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="footer-text">Valor e Lealdade • PCRR 2026</div>
+
     <script>
-        // Data alvo: 04 de Setembro de 2026
+        // Data Alvo: 04 de Setembro de 2026
         const targetDate = new Date('2026-09-04T00:00:00').getTime();
         
-        // Data de referência para início da barra de progresso (ex: 01 de Jan de 2024)
-        // Isso dá uma noção de jornada percorrida
+        // Data de Início para a barra de progresso (ex: Data da Publicação do Edital ou início de 2024)
         const startDate = new Date('2024-01-01T00:00:00').getTime();
 
-        function updateCountdown() {
+        function update() {
             const now = new Date().getTime();
             const distance = targetDate - now;
 
-            // Verificação de conclusão
             if (distance < 0) {
-                document.getElementById('main-content').style.display = 'none';
-                document.getElementById('finish-message').style.display = 'block';
+                document.querySelector('.header').innerHTML = "<h1>O DIA CHEGOU! 🎉</h1>";
                 return;
             }
 
-            // Cálculos matemáticos
+            // Cálculos
             const d = Math.floor(distance / (1000 * 60 * 60 * 24));
             const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Atualização dos números
+            // Atualiza Topo
+            document.getElementById('top-days').innerText = `FALTAM ${d} DIAS`;
+
+            // Atualiza Cards
             document.getElementById('days').innerText = d.toString().padStart(2, '0');
             document.getElementById('hours').innerText = h.toString().padStart(2, '0');
             document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
             document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
 
-            // Cálculo do Progresso (2 casas decimais)
-            const totalDuration = targetDate - startDate;
-            const elapsed = now - startDate;
-            let percent = (elapsed / totalDuration) * 100;
-            
-            // Garantir que a porcentagem fique entre 0 e 100
+            // Progresso
+            const total = targetDate - startDate;
+            const current = now - startDate;
+            let percent = (current / total) * 100;
             percent = Math.min(Math.max(percent, 0), 100);
 
             document.getElementById('progress-bar').style.width = percent + '%';
             document.getElementById('percent-text').innerText = percent.toFixed(2) + '%';
         }
 
-        // Atualização contínua
-        setInterval(updateCountdown, 1000);
-        updateCountdown(); // Chamada inicial
+        setInterval(update, 1000);
+        update();
     </script>
 </body>
 </html>
