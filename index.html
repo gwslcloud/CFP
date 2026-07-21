@@ -7,22 +7,20 @@
     
     <!-- Configurações de PWA -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#020617">
+    <meta name="theme-color" content="#05070a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="brasao.png">
 
-    <!-- Fontes Premium -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@100;300;600;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #D4AF37;
-            --gold-soft: rgba(212, 175, 55, 0.6);
-            --bg-deep: #020617;
-            --navy-glow: #0f172a;
-            --glass-bg: rgba(255, 255, 255, 0.01);
-            --glass-border: rgba(212, 175, 55, 0.12);
+            --gold-gradient: linear-gradient(180deg, #F3DFA2 0%, #D4AF37 100%);
+            --navy-deep: #05070a;
+            --navy-light: #0f172a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border-gold: rgba(212, 175, 55, 0.2);
         }
 
         * {
@@ -34,158 +32,98 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-deep);
+            background-color: var(--navy-deep);
             color: #fff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; /* Evita scroll indesejado com as luzes */
-        }
-
-        /* 1. MESH GRADIENT (LUZES ATMOSFÉRICAS) */
-        .ambient-light {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            overflow: hidden;
-            background: radial-gradient(circle at 50% 100%, #0a1120 0%, var(--bg-deep) 100%);
-        }
-
-        .light-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
-            animation: move 20s infinite alternate;
-        }
-
-        .orb-1 { width: 400px; height: 400px; background: var(--gold); top: -10%; left: -10%; }
-        .orb-2 { width: 300px; height: 300px; background: #1e3a8a; bottom: -5%; right: -5%; animation-delay: -5s;}
-
-        @keyframes move {
-            from { transform: translate(0, 0); }
-            to { transform: translate(50px, 100px); }
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% -20%, var(--navy-light) 0%, var(--navy-deep) 80%);
         }
 
         .app-container {
             width: 100%;
             max-width: 500px;
-            padding: 2rem;
+            padding: 2rem 1.5rem;
             text-align: center;
-            z-index: 10;
+            animation: fadeIn 1s ease-out;
         }
 
-        /* 2. MICRO-INTERAÇÕES (ANIMAÇÕES DE ENTRADA) */
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s forwards;
-        }
-
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        .brasao-wrapper { margin-bottom: 1.5rem; }
         .brasao {
-            width: 130px;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.15));
-            animation-delay: 0.2s;
+            width: 140px;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2));
         }
 
-        /* 3. TIPOGRAFIA REFINADA */
         .faltam-label {
             font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
-            letter-spacing: 12px; /* Kerning extremo profissional */
+            font-size: 1.2rem;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            color: var(--gold-soft);
-            margin-bottom: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
             font-weight: 400;
-            animation-delay: 0.4s;
+            display: block;
         }
 
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.2rem;
-            margin-bottom: 2.5rem;
-            animation-delay: 0.6s;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
-        /* 4. GLASSMORPHISM 2.0 */
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 1.8rem 0.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* Brilho na quina do card */
-        .card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, transparent 40%);
-            pointer-events: none;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 1.5rem 0.5rem;
         }
 
         .number {
             display: block;
-            font-size: 3rem;
-            font-weight: 900; /* Peso extremo para contraste */
-            letter-spacing: -2px;
-            color: #fff;
-            margin-bottom: 5px;
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
         }
 
         .unit {
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--gold);
-            font-weight: 600;
-            opacity: 0.7;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
         }
 
         .target-phrase {
             font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
-            letter-spacing: 3px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            color: #fff;
-            margin-bottom: 3.5rem;
-            font-weight: 400;
-            animation-delay: 0.8s;
+            margin-bottom: 2rem;
         }
 
-        .progress-container {
-            width: 100%;
-            animation-delay: 1s;
-        }
-
+        .progress-container { width: 100%; padding: 0 10px; margin-bottom: 2rem;}
         .progress-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.6rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            color: var(--gold-soft);
+            font-size: 0.65rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .track {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.03);
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
         }
@@ -193,81 +131,85 @@
         .bar {
             height: 100%;
             width: 0%;
-            background: var(--gold);
-            box-shadow: 0 0 20px var(--gold-soft);
-            transition: width 1.5s ease-in-out;
+            background: linear-gradient(90deg, #1A365D, var(--gold));
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            transition: width 1s ease-in-out;
         }
 
+        /* Botão de Instalação Profissional */
         #install-btn {
             display: none;
-            background: rgba(212, 175, 55, 0.05);
-            border: 1px solid var(--glass-border);
+            background: none;
+            border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 12px 24px;
-            border-radius: 12px;
+            padding: 10px 20px;
+            border-radius: 50px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             cursor: pointer;
-            margin: 2rem auto;
-            transition: 0.3s;
+            margin: 0 auto 2rem;
+            transition: all 0.3s;
+        }
+
+        #install-btn:active {
+            background: var(--gold);
+            color: var(--navy-deep);
         }
 
         .footer-brand {
-            margin-top: 3rem;
             font-size: 0.6rem;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             color: rgba(255,255,255,0.2);
             text-transform: uppercase;
-            animation-delay: 1.2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (min-width: 768px) {
             .app-container { max-width: 800px; }
             .countdown-grid { grid-template-columns: repeat(4, 1fr); }
-            .number { font-size: 4.5rem; }
+            .number { font-size: 4rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-light">
-        <div class="light-orb orb-1"></div>
-        <div class="light-orb orb-2"></div>
-    </div>
-
     <div class="app-container">
-        <header class="brasao-wrapper reveal">
-            <img src="brasao.png" alt="PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+        <header class="brasao-wrapper">
+            <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
         </header>
 
-        <span class="faltam-label reveal">Faltam</span>
+        <span class="faltam-label">Faltam</span>
 
-        <main class="countdown-grid reveal">
+        <main class="countdown-grid">
             <div class="card">
                 <span class="number" id="days">00</span>
                 <span class="unit">Dias</span>
             </div>
             <div class="card">
                 <span class="number" id="hours">00</span>
-                <span class="unit">Hrs</span>
+                <span class="unit">Horas</span>
             </div>
             <div class="card">
                 <span class="number" id="minutes">00</span>
-                <span class="unit">Min</span>
+                <span class="unit">Minutos</span>
             </div>
             <div class="card">
                 <span class="number" id="seconds">00</span>
-                <span class="unit">Seg</span>
+                <span class="unit">Segundos</span>
             </div>
         </main>
 
-        <h2 class="target-phrase reveal">Para o início da Aula Inaugural</h2>
+        <h2 class="target-phrase">Para o início da Aula Inaugural</h2>
 
-        <div class="progress-container reveal">
+        <div class="progress-container">
             <div class="progress-label">
-                <span>Jornada de Formação</span>
+                <span>Progresso até o Curso</span>
                 <span id="pct">0.00%</span>
             </div>
             <div class="track">
@@ -277,9 +219,7 @@
 
         <button id="install-btn">Instalar Aplicativo</button>
 
-        <footer class="footer-brand reveal">
-            Comissão Oficial do Cadastro Reserva Da PCRR
-        </footer>
+        <div class="footer-brand">Comissão Oficial do Cadastro Reserva Da PCRR</div>
     </div>
 
     <script>
@@ -319,20 +259,27 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+        // LÓGICA PWA: Registro do Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
 
+        // LÓGICA PWA: Botão de Instalação
         let deferredPrompt;
         const installBtn = document.getElementById('install-btn');
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             installBtn.style.display = 'block';
         });
+
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.style.display = 'none';
                 deferredPrompt = null;
-                installBtn.style.display = 'none';
             }
         });
     </script>
