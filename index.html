@@ -1,282 +1,257 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contagem Regressiva</title>
-  <style>
-    /* Reset básico e variáveis de estilo */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Pro | 04 Setembro 2026</title>
+    <!-- Google Fonts: Inter para um visual moderno e limpo -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent-color: #38bdf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --progress-gradient: linear-gradient(90deg, #0ea5e9 0%, #2dd4bf 100%);
+        }
 
-    :root {
-      --bg-color: #0b0f19;
-      --card-bg: rgba(22, 30, 49, 0.7);
-      --border-color: rgba(255, 255, 255, 0.08);
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --accent-color: #8b5cf6;
-      --accent-glow: rgba(139, 92, 246, 0.4);
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(45, 212, 191, 0.1) 0%, transparent 40%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
 
-    /* Detalhe de fundo decorativo */
-    body::before {
-      content: "";
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: var(--accent-glow);
-      filter: blur(120px);
-      border-radius: 50%;
-      top: 20%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 0;
-      pointer-events: none;
-    }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            padding: 2rem;
+            z-index: 1;
+        }
 
-    /* Container Principal */
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 600px;
-      padding: 2rem;
-      text-align: center;
-    }
+        h1 {
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.025em;
-    }
+        p.subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            font-size: 1.1rem;
+        }
 
-    .subtitle {
-      color: var(--text-muted);
-      font-size: 1rem;
-      margin-bottom: 2.5rem;
-    }
+        /* Grid da Contagem Regressiva */
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
 
-    /* Blocos da Contagem Regressiva */
-    .countdown-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-    }
+        .count-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 1.5rem 1rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
 
-    .time-block {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(8px);
-      padding: 1.25rem 0.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    }
+        .count-box:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
 
-    .time-number {
-      display: block;
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--text-main);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
+        .number {
+            display: block;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
 
-    .time-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
+        .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
 
-    /* Barra de Progresso */
-    .progress-container {
-      width: 100%;
-      margin-top: 1rem;
-    }
+        /* Barra de Progresso */
+        .progress-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-    .progress-bar-wrapper {
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-color);
-      height: 16px;
-      border-radius: 9999px;
-      overflow: hidden;
-      position: relative;
-    }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 0.75rem;
+        }
 
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #6366f1, var(--accent-color));
-      border-radius: 9999px;
-      box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
-      transition: width 1s linear;
-    }
+        .percent-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
 
-    .progress-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 0.75rem;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-    }
+        .progress-track {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
 
-    .progress-percent {
-      font-weight: 700;
-      color: var(--text-main);
-    }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--progress-gradient);
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    /* Mensagem Comemorativa */
-    #celebration-message {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #34d399; /* Emerald */
-      background: var(--card-bg);
-      border: 1px solid rgba(52, 211, 153, 0.2);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(52, 211, 153, 0.1);
-      margin-bottom: 2rem;
-    }
+        /* Mensagem de Finalização */
+        #message {
+            display: none;
+            font-size: 2rem;
+            font-weight: 800;
+            animation: fadeIn 1s ease;
+        }
 
-    .hidden {
-      display: none !important;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    /* Responsividade */
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.8rem;
-      }
-      
-      .countdown-grid {
-        gap: 0.5rem;
-      }
-
-      .time-number {
-        font-size: 1.8rem;
-      }
-
-      .time-label {
-        font-size: 0.65rem;
-      }
-    }
-  </style>
+        /* Responsividade */
+        @media (max-width: 640px) {
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            h1 { font-size: 1.8rem; }
+            .number { font-size: 2.2rem; }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Tempo Restante</h1>
-    <p class="subtitle">Contagem regressiva até 04 de Setembro de 2026</p>
+    <div class="container">
+        <div id="countdown-content">
+            <h1>Lançamento Oficial</h1>
+            <p class="subtitle">Contagem regressiva para 04 de Setembro de 2026</p>
 
-    <!-- Painel de Contagem -->
-    <div id="countdown" class="countdown-grid">
-      <div class="time-block">
-        <span id="days" class="time-number">00</span>
-        <span class="time-label">Dias</span>
-      </div>
-      <div class="time-block">
-        <span id="hours" class="time-number">00</span>
-        <span class="time-label">Horas</span>
-      </div>
-      <div class="time-block">
-        <span id="minutes" class="time-number">00</span>
-        <span class="time-label">Mins</span>
-      </div>
-      <div class="time-block">
-        <span id="seconds" class="time-number">00</span>
-        <span class="time-label">Segs</span>
-      </div>
+            <div class="countdown-grid">
+                <div class="count-box">
+                    <span class="number" id="days">00</span>
+                    <span class="label">Dias</span>
+                </div>
+                <div class="count-box">
+                    <span class="number" id="hours">00</span>
+                    <span class="label">Horas</span>
+                </div>
+                <div class="count-box">
+                    <span class="number" id="minutes">00</span>
+                    <span class="label">Minutos</span>
+                </div>
+                <div class="count-box">
+                    <span class="number" id="seconds">00</span>
+                    <span class="label">Segundos</span>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="label">Progresso do Objetivo</span>
+                    <span class="percent-text" id="percent-text">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="message">
+            🎉 O dia chegou! <br>
+            <span style="font-size: 1.2rem; font-weight: 400; color: var(--text-secondary);">O evento já começou.</span>
+        </div>
     </div>
 
-    <!-- Mensagem de Sucesso (Oculta por padrão) -->
-    <div id="celebration-message" class="hidden">
-      O dia chegou! 🎉
-    </div>
+    <script>
+        // Configurações da Data
+        // Data de Início: Fixada no momento da criação para cálculo de progresso real
+        const startDate = new Date('2024-07-21T00:00:00').getTime(); 
+        const targetDate = new Date('2026-09-04T00:00:00').getTime();
 
-    <!-- Seção de Progresso -->
-    <div class="progress-container">
-      <div class="progress-bar-wrapper">
-        <div id="progress-bar" class="progress-bar"></div>
-      </div>
-      <div class="progress-info">
-        <span>Progresso decorrido</span>
-        <span id="progress-percent" class="progress-percent">0.0%</span>
-      </div>
-    </div>
-  </div>
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
 
-  <script>
-    // Configurações de Data
-    // Data de início: 21 de Julho de 2026
-    const startDate = new Date("2026-07-21T00:00:00").getTime();
-    // Data alvo: 04 de Setembro de 2026 às 00:00
-    const targetDate = new Date("2026-09-04T00:00:00").getTime();
-    
-    const totalDuration = targetDate - startDate;
+            // Se a data já passou
+            if (distance < 0) {
+                document.getElementById('countdown-content').style.display = 'none';
+                document.getElementById('message').style.display = 'block';
+                return;
+            }
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const timeRemaining = targetDate - now;
+            // Cálculos de tempo
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
 
-      // Se o tempo acabar
-      if (timeRemaining <= 0) {
-        document.getElementById('countdown').classList.add('hidden');
-        document.getElementById('celebration-message').classList.remove('hidden');
-        document.getElementById('progress-bar').style.width = '100%';
-        document.getElementById('progress-percent').innerText = '100.0%';
-        clearInterval(timerInterval);
-        return;
-      }
+            // Atualização do DOM com formatação (zero à esquerda)
+            document.getElementById('days').innerText = d.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
 
-      // Cálculos de tempo
-      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            // Cálculo do Progresso
+            const totalDuration = targetDate - startDate;
+            const elapsed = now - startDate;
+            let percent = (elapsed / totalDuration) * 100;
+            
+            // Limitar porcentagem entre 0 e 100
+            percent = Math.min(Math.max(percent, 0), 100);
 
-      // Atualização do DOM da contagem
-      document.getElementById('days').innerText = String(days).padStart(2, '0');
-      document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-      document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-      document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('percent-text').innerText = percent.toFixed(1) + '%';
+        }
 
-      // Cálculo de progresso
-      const elapsed = now - startDate;
-      let percent = (elapsed / totalDuration) * 100;
-      
-      // Garante que o progresso fique entre 0% e 100%
-      percent = Math.max(0, Math.min(100, percent));
+        // Atualiza a cada segundo
+        setInterval(updateCountdown, 1000);
 
-      // Atualização do DOM do progresso
-      document.getElementById('progress-bar').style.width = percent.toFixed(1) + '%';
-      document.getElementById('progress-percent').innerText = percent.toFixed(1) + '%';
-    }
-
-    // Atualiza a cada segundo
-    const timerInterval = setInterval(updateCountdown, 1000);
-    
-    // Executa a primeira vez de forma imediata
-    updateCountdown();
-  </script>
+        // Executa imediatamente ao carregar
+        updateCountdown();
+    </script>
 </body>
 </html>
