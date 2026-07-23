@@ -181,7 +181,13 @@
             width: 100%;
         }
 
-        .progress-container { width: 100%; margin-bottom: 2.5rem; }
+        /* --- PROGRESS BAR MODIFICADA --- */
+        .progress-container { 
+            width: 100%; 
+            margin-bottom: 2.5rem; 
+            position: relative; 
+        }
+        
         .progress-label {
             display: flex;
             justify-content: space-between;
@@ -193,11 +199,12 @@
         }
 
         .track {
-            height: 6px;
+            height: 8px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-            overflow: hidden;
+            border-radius: 10px;
+            position: relative; /* Importante para o marcador */
             border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: visible; /* Deixamos visível para o marcador não sumir */
         }
 
         .bar {
@@ -206,6 +213,68 @@
             background: linear-gradient(90deg, #1e293b, var(--gold));
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
             transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* O MARCADOR (A TARJA CLICÁVEL) */
+        .progress-marker {
+            position: absolute;
+            right: -2px; /* No final da barra */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background: var(--gold);
+            border: 2px solid var(--navy-black);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 0 10px var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .progress-marker:hover {
+            transform: translateY(-50%) scale(1.3);
+            box-shadow: 0 0 20px var(--gold-bright);
+        }
+
+        /* O BALÃO COM A DATA */
+        .date-tooltip {
+            position: absolute;
+            bottom: 30px; /* Acima da barra */
+            right: -40px;
+            background: var(--gold);
+            color: var(--navy-black);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* Triângulo do balão */
+        .date-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            right: 42px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--gold) transparent transparent transparent;
+        }
+
+        .date-tooltip.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
         #install-btn {
@@ -287,6 +356,9 @@
             </div>
             <div class="track">
                 <div class="bar" id="bar"></div>
+                <!-- Marcador e Tooltip adicionados aqui -->
+                <div class="progress-marker" id="marker"></div>
+                <div class="date-tooltip" id="tooltip">GRANDE DIA: 04/09/2026</div>
             </div>
         </div>
 
@@ -300,6 +372,25 @@
     <script>
         const target = new Date('2026-09-04T00:00:00').getTime();
         const start = new Date('2024-01-01T00:00:00').getTime();
+
+        // Lógica do marcador interativo
+        const marker = document.getElementById('marker');
+        const tooltip = document.getElementById('tooltip');
+
+        marker.addEventListener('click', (e) => {
+            e.stopPropagation();
+            tooltip.classList.toggle('show');
+            
+            // Auto-hide após 4 segundos
+            if(tooltip.classList.contains('show')) {
+                setTimeout(() => tooltip.classList.remove('show'), 4000);
+            }
+        });
+
+        // Fechar tooltip se clicar fora
+        document.addEventListener('click', () => {
+            tooltip.classList.remove('show');
+        });
 
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -341,8 +432,8 @@
             document.getElementById('pct').innerText = percent.toFixed(2) + '%';
         }
 
-            setInterval(updateCountdown, 1000);
-            updateCountdown();
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
