@@ -45,7 +45,7 @@
             text-align: center;
         }
 
-        /* --- SPLASH SCREEN (MANTIDA ORIGINAL) --- */
+        /* --- SPLASH SCREEN (ACELERADA) --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -55,7 +55,7 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 1s ease, visibility 1s;
+            transition: opacity 0.8s ease, visibility 0.8s;
             padding: 20px;
         }
 
@@ -76,7 +76,8 @@
             font-size: 1.1rem;
             width: 100%;
             opacity: 0;
-            animation: fadeInText 2s forwards 0.5s;
+            /* Texto aparece mais rápido para acompanhar a splash curta */
+            animation: fadeInText 1.2s forwards 0.3s;
         }
 
         @keyframes pulse-gold {
@@ -105,7 +106,7 @@
             z-index: 0;
         }
 
-        /* --- ESTADOS INICIAIS PARA O EFEITO DOMINÓ --- */
+        /* --- EFEITO DOMINÓ --- */
         .brasao-wrapper, .faltam-label, .card, .target-phrase, .progress-container, footer, #install-btn {
             opacity: 0;
             transform: translateY(15px);
@@ -125,16 +126,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* DELAYS DO DOMINÓ */
         .app-container.started .brasao-wrapper { animation-delay: 0.1s; }
-        .app-container.started .faltam-label { animation-delay: 0.3s; }
-        .app-container.started .card:nth-child(1) { animation-delay: 0.5s; }
-        .app-container.started .card:nth-child(2) { animation-delay: 0.6s; }
-        .app-container.started .card:nth-child(3) { animation-delay: 0.7s; }
-        .app-container.started .card:nth-child(4) { animation-delay: 0.8s; }
-        .app-container.started .target-phrase { animation-delay: 1.0s; }
-        .app-container.started .progress-container { animation-delay: 1.2s; }
-        .app-container.started footer, .app-container.started #install-btn { animation-delay: 1.4s; }
+        .app-container.started .faltam-label { animation-delay: 0.25s; }
+        .app-container.started .card:nth-child(1) { animation-delay: 0.4s; }
+        .app-container.started .card:nth-child(2) { animation-delay: 0.5s; }
+        .app-container.started .card:nth-child(3) { animation-delay: 0.6s; }
+        .app-container.started .card:nth-child(4) { animation-delay: 0.7s; }
+        .app-container.started .target-phrase { animation-delay: 0.9s; }
+        .app-container.started .progress-container { animation-delay: 1.1s; }
+        .app-container.started footer, .app-container.started #install-btn { animation-delay: 1.3s; }
 
         .app-container {
             width: 100%;
@@ -147,7 +147,7 @@
             z-index: 10;
         }
 
-        /* --- BRASÃO COM GLOW DINÂMICO --- */
+        /* --- BRASÃO COM GLOW --- */
         .brasao-wrapper { margin-bottom: 2rem; }
         .brasao {
             width: 160px;
@@ -430,6 +430,7 @@
             tooltip.classList.remove('show');
         });
 
+        // --- CARREGAMENTO RÁPIDO ---
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
@@ -437,10 +438,502 @@
                 splash.style.opacity = '0';
                 setTimeout(() => {
                     splash.style.visibility = 'hidden';
-                    // ADICIONA A CLASSE PARA INICIAR AS ANIMAÇÕES DE DOMINÓ
                     main.classList.add('started');
-                }, 1000);
-            }, 3500);
+                }, 800); // Tempo de fade out reduzido
+            }, 1800); // Espera apenas 1.8s (metade do anterior)
+        });
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = target - now;
+
+            if (diff <= 0) {
+                document.getElementById('main-content').innerHTML = `<h1 style='color:var(--gold); font-family:Cinzel;'>MISSÃO INICIADA</h1>`;
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = d.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
+
+            const total = target - start;
+            const current = now - start;
+            let percent = (current / total) * 100;
+            percent = Math.min(Math.max(percent, 0), 100);
+            document.getElementById('bar').style.width = percent + '%';
+            document.getElementById('pct').innerText = percent.toFixed(2) + '%';
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt = null;
+                installBtn.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CFP PCRR 2026</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#05070a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="brasao.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-bright: #F3DFA2;
+            --gold-muted: rgba(212, 175, 55, 0.4);
+            --red-alert: #cc0000;
+            --navy-black: #05070a;
+            --tactical-blue: #0a1120;
+            --text-gray: #cbd5e1;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--navy-black);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            text-align: center;
+        }
+
+        /* --- SPLASH SCREEN (ACELERADA) --- */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--navy-black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+            padding: 20px;
+        }
+
+        .splash-brasao {
+            width: 180px;
+            max-width: 60%;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
+            animation: pulse-gold 2s infinite ease-in-out;
+        }
+
+        .splash-text {
+            font-family: 'Cinzel', serif;
+            margin-top: 2rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            width: 100%;
+            opacity: 0;
+            /* Texto aparece mais rápido para acompanhar a splash curta */
+            animation: fadeInText 1.2s forwards 0.3s;
+        }
+
+        @keyframes pulse-gold {
+            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 50px rgba(212, 175, 55, 0.5)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
+        }
+
+        @keyframes fadeInText { to { opacity: 1; } }
+
+        /* --- FUNDO TÁTICO --- */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+            z-index: 1;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 35%, var(--tactical-blue) 0%, var(--navy-black) 70%);
+            z-index: 0;
+        }
+
+        /* --- EFEITO DOMINÓ --- */
+        .brasao-wrapper, .faltam-label, .card, .target-phrase, .progress-container, footer, #install-btn {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        .app-container.started .brasao-wrapper,
+        .app-container.started .faltam-label,
+        .app-container.started .card,
+        .app-container.started .target-phrase,
+        .app-container.started .progress-container,
+        .app-container.started footer,
+        .app-container.started #install-btn {
+            animation: revealItem 0.6s ease forwards;
+        }
+
+        @keyframes revealItem {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-container.started .brasao-wrapper { animation-delay: 0.1s; }
+        .app-container.started .faltam-label { animation-delay: 0.25s; }
+        .app-container.started .card:nth-child(1) { animation-delay: 0.4s; }
+        .app-container.started .card:nth-child(2) { animation-delay: 0.5s; }
+        .app-container.started .card:nth-child(3) { animation-delay: 0.6s; }
+        .app-container.started .card:nth-child(4) { animation-delay: 0.7s; }
+        .app-container.started .target-phrase { animation-delay: 0.9s; }
+        .app-container.started .progress-container { animation-delay: 1.1s; }
+        .app-container.started footer, .app-container.started #install-btn { animation-delay: 1.3s; }
+
+        .app-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- BRASÃO COM GLOW --- */
+        .brasao-wrapper { margin-bottom: 2rem; }
+        .brasao {
+            width: 160px;
+            height: auto;
+            animation: breathe-glow 4s infinite ease-in-out;
+        }
+
+        @keyframes breathe-glow {
+            0% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
+            50% { filter: drop-shadow(0 0 35px rgba(212, 175, 55, 0.6)); }
+            100% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
+        }
+
+        .faltam-label {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            width: 100%;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--gold-muted);
+            border-radius: 12px;
+            padding: 1.5rem 0.5rem;
+        }
+
+        .number {
+            display: block;
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .unit {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .target-phrase {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            margin-bottom: 3rem;
+            width: 100%;
+        }
+
+        /* --- PROGRESS BAR COM SHIMMER --- */
+        .progress-container { 
+            width: 100%; 
+            margin-bottom: 2.5rem; 
+            position: relative; 
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .track {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: visible; 
+        }
+
+        .bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #1e293b, var(--gold));
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .bar::after {
+            content: "";
+            position: absolute;
+            top: 0; left: -150%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: progress-shimmer 3s infinite linear;
+        }
+
+        @keyframes progress-shimmer {
+            0% { left: -150%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .progress-marker {
+            position: absolute;
+            right: -2px; 
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--red-alert);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 0 12px var(--red-alert);
+            transition: all 0.3s ease;
+        }
+
+        .date-tooltip {
+            position: absolute;
+            bottom: 28px;
+            right: -10px; 
+            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+            color: var(--navy-black); 
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .date-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            right: 10px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--gold) transparent transparent transparent;
+        }
+
+        .date-tooltip.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #install-btn {
+            display: none;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-brand {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            color: var(--text-gray);
+            opacity: 0.6;
+            text-transform: uppercase;
+            width: 100%;
+            line-height: 1.5;
+        }
+
+        @media (min-width: 768px) {
+            .app-container { max-width: 850px; }
+            .countdown-grid { grid-template-columns: repeat(4, 1fr); }
+            .number { font-size: 4.5rem; }
+            .brasao { width: 220px; }
+            .faltam-label { font-size: 1.4rem; letter-spacing: 12px; }
+            .target-phrase { font-size: 1.3rem; letter-spacing: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <img src="brasao.png" alt="PCRR" class="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+        <h2 class="splash-text">A Turma do Impossível</h2>
+    </div>
+
+    <div class="app-container" id="main-content">
+        <header class="brasao-wrapper">
+            <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+        </header>
+
+        <span class="faltam-label">Faltam</span>
+
+        <main class="countdown-grid">
+            <div class="card">
+                <span class="number" id="days">00</span>
+                <span class="unit">Dias</span>
+            </div>
+            <div class="card">
+                <span class="number" id="hours">00</span>
+                <span class="unit">Horas</span>
+            </div>
+            <div class="card">
+                <span class="number" id="minutes">00</span>
+                <span class="unit">Minutos</span>
+            </div>
+            <div class="card">
+                <span class="number" id="seconds">00</span>
+                <span class="unit">Segundos</span>
+            </div>
+        </main>
+
+        <h2 class="target-phrase">Para o início da aula inaugural</h2>
+
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Progresso</span>
+                <span id="pct">0.00%</span>
+            </div>
+            <div class="track">
+                <div class="bar" id="bar"></div>
+                <div class="progress-marker" id="marker"></div>
+                <div class="date-tooltip" id="tooltip">04/09/26</div>
+            </div>
+        </div>
+
+        <button id="install-btn">Adicionar à Tela Inicial</button>
+
+        <footer class="footer-brand">
+            Comissão Oficial do Cadastro Reserva da PCRR
+        </footer>
+    </div>
+
+    <script>
+        const target = new Date('2026-09-04T00:00:00').getTime();
+        const start = new Date('2024-01-01T00:00:00').getTime();
+
+        const marker = document.getElementById('marker');
+        const tooltip = document.getElementById('tooltip');
+
+        marker.addEventListener('click', (e) => {
+            e.stopPropagation();
+            tooltip.classList.toggle('show');
+            if(tooltip.classList.contains('show')) {
+                setTimeout(() => tooltip.classList.remove('show'), 3500);
+            }
+        });
+
+        document.addEventListener('click', () => {
+            tooltip.classList.remove('show');
+        });
+
+        // --- CARREGAMENTO RÁPIDO ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                const main = document.getElementById('main-content');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.visibility = 'hidden';
+                    main.classList.add('started');
+                }, 800); // Tempo de fade out reduzido
+            }, 1800); // Espera apenas 1.8s (metade do anterior)
         });
 
         function updateCountdown() {
