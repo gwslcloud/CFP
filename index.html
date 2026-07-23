@@ -136,7 +136,7 @@
 
         @keyframes revealItem { to { opacity: 1; transform: translateY(0); } }
 
-        /* DELAYS */
+        /* DELAYS EFEITO DOMINÓ */
         .app-container.started .brasao-wrapper { animation-delay: 0.1s; }
         .app-container.started .faltam-label { animation-delay: 0.2s; }
         .app-container.started .card:nth-child(1) { animation-delay: 0.3s; }
@@ -160,8 +160,22 @@
         .unit { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700; }
         .target-phrase { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 3px; color: var(--text-gray); margin-bottom: 3rem; text-transform: uppercase; }
 
-        /* BARRA */
+        /* --- BARRA DE PROGRESSO AJUSTADA --- */
         .progress-container { width: 100%; margin-bottom: 2.5rem; }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            /* Gradiente no texto */
+            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         .track { height: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); }
         .bar { height: 100%; width: 0%; background: linear-gradient(90deg, #1e293b, var(--gold)); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); transition: width 1.5s ease; border-radius: 10px; position: relative; overflow: hidden; }
         .bar::after { content: ""; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: progress-shimmer 3s infinite linear; }
@@ -189,7 +203,15 @@
         .action-btn:active { background: var(--gold); color: var(--navy-black); }
         #install-btn { display: none; }
 
-        .footer-brand { font-size: 0.65rem; letter-spacing: 2px; color: var(--text-gray); opacity: 0.6; text-transform: uppercase; }
+        /* --- RODAPÉ MARCA D'ÁGUA --- */
+        .footer-brand {
+            font-size: 0.55rem;
+            letter-spacing: 3px;
+            color: var(--text-gray);
+            opacity: 0.3; /* Mais discreto */
+            text-transform: uppercase;
+            margin-top: 1rem;
+        }
 
         @media (min-width: 768px) {
             .app-container { max-width: 850px; }
@@ -224,7 +246,10 @@
         <h2 class="target-phrase">Para o início da aula inaugural</h2>
 
         <div class="progress-container">
-            <div class="progress-label"><span>Progresso</span><span id="pct">0.00%</span></div>
+            <div class="progress-label">
+                <span>Progresso</span>
+                <span id="pct">0.00%</span>
+            </div>
             <div class="track">
                 <div class="bar" id="bar"></div>
                 <div class="progress-marker" id="marker"></div>
@@ -240,7 +265,6 @@
         <footer class="footer-brand">Comissão Oficial do Cadastro Reserva da PCRR</footer>
     </div>
 
-    <!-- Canvas invisível para gerar a imagem -->
     <canvas id="share-canvas" style="display:none;" width="1080" height="1920"></canvas>
 
     <script>
@@ -297,7 +321,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- LÓGICA AVANÇADA DE COMPARTILHAMENTO ---
+        // SHARE LOGIC
         const shareBtn = document.getElementById('share-btn');
         const canvas = document.getElementById('share-canvas');
         const ctx = canvas.getContext('2d');
@@ -307,79 +331,59 @@
             shareBtn.disabled = true;
 
             try {
-                // 1. Desenhar Fundo Tático
                 ctx.fillStyle = "#05070a";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Gradiente tático azul no centro
                 const grad = ctx.createRadialGradient(540, 600, 0, 540, 600, 800);
                 grad.addColorStop(0, "#0a1120");
                 grad.addColorStop(1, "#05070a");
                 ctx.fillStyle = grad;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // 2. Carregar e desenhar o Brasão
                 const img = new Image();
                 img.crossOrigin = "anonymous"; 
                 img.src = document.getElementById('brasao-img').src;
-                
                 await new Promise(resolve => img.onload = resolve);
                 ctx.drawImage(img, 340, 400, 400, 400);
 
-                // 3. Desenhar Textos
                 ctx.textAlign = "center";
-                
-                // Label Dourada
                 ctx.fillStyle = "#D4AF37";
                 ctx.font = "bold 50px Montserrat";
                 ctx.fillText("FALTAM", 540, 950);
-
-                // O Número principal
                 ctx.fillStyle = "#ffffff";
                 ctx.font = "900 280px Montserrat";
                 ctx.fillText(currentDays, 540, 1250);
-
-                // Unidade
                 ctx.fillStyle = "#D4AF37";
                 ctx.font = "bold 60px Montserrat";
                 ctx.fillText("DIAS", 540, 1350);
-
-                // Frase final
                 ctx.fillStyle = "#cbd5e1";
                 ctx.font = "40px Cinzel";
                 ctx.fillText("PARA O INÍCIO DA AULA INAUGURAL", 540, 1500);
-
-                // Marca d'água da comissão
                 ctx.globalAlpha = 0.5;
                 ctx.font = "25px Montserrat";
                 ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
 
-                // 4. Converter para arquivo e compartilhar
                 canvas.toBlob(async (blob) => {
                     const file = new File([blob], 'cfp-pcrr-status.png', { type: 'image/png' });
-                    
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         await navigator.share({
                             files: [file],
                             title: 'CFP PCRR 2026',
-                            text: `Faltam ${currentDays} dias para a nossa aula inaugural! PCRR - Roraima.`
+                            text: `Faltam ${currentDays} dias para a nossa aula inaugural! PCRR.`
                         });
                     } else {
-                        alert("Seu navegador não suporta compartilhamento de imagem. Tente usar o Chrome ou Safari no celular.");
+                        alert("Use Chrome ou Safari no celular para compartilhar imagem.");
                     }
                     shareBtn.innerText = "Compartilhar no status";
                     shareBtn.disabled = false;
                 });
-
             } catch (err) {
-                console.error(err);
-                alert("Erro ao gerar imagem. Verifique sua conexão.");
+                alert("Erro ao gerar imagem.");
                 shareBtn.innerText = "Compartilhar no status";
                 shareBtn.disabled = false;
             }
         });
 
-        // PWA Install
+        // PWA
         let deferredPrompt;
         const installBtn = document.getElementById('install-btn');
         window.addEventListener('beforeinstallprompt', (e) => {
