@@ -105,6 +105,37 @@
             z-index: 0;
         }
 
+        /* --- ESTADOS INICIAIS PARA O EFEITO DOMINÓ --- */
+        .brasao-wrapper, .faltam-label, .card, .target-phrase, .progress-container, footer, #install-btn {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        .app-container.started .brasao-wrapper,
+        .app-container.started .faltam-label,
+        .app-container.started .card,
+        .app-container.started .target-phrase,
+        .app-container.started .progress-container,
+        .app-container.started footer,
+        .app-container.started #install-btn {
+            animation: revealItem 0.6s ease forwards;
+        }
+
+        @keyframes revealItem {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* DELAYS DO DOMINÓ */
+        .app-container.started .brasao-wrapper { animation-delay: 0.1s; }
+        .app-container.started .faltam-label { animation-delay: 0.3s; }
+        .app-container.started .card:nth-child(1) { animation-delay: 0.5s; }
+        .app-container.started .card:nth-child(2) { animation-delay: 0.6s; }
+        .app-container.started .card:nth-child(3) { animation-delay: 0.7s; }
+        .app-container.started .card:nth-child(4) { animation-delay: 0.8s; }
+        .app-container.started .target-phrase { animation-delay: 1.0s; }
+        .app-container.started .progress-container { animation-delay: 1.2s; }
+        .app-container.started footer, .app-container.started #install-btn { animation-delay: 1.4s; }
+
         .app-container {
             width: 100%;
             max-width: 600px;
@@ -114,8 +145,6 @@
             align-items: center;
             position: relative;
             z-index: 10;
-            opacity: 0;
-            transition: opacity 1.5s ease;
         }
 
         /* --- BRASÃO COM GLOW DINÂMICO --- */
@@ -123,7 +152,6 @@
         .brasao {
             width: 160px;
             height: auto;
-            /* Animação de respiração do brilho */
             animation: breathe-glow 4s infinite ease-in-out;
         }
 
@@ -224,23 +252,15 @@
             border-radius: 10px;
             position: relative;
             z-index: 1;
-            overflow: hidden; /* Importante para o shimmer */
+            overflow: hidden;
         }
 
-        /* Efeito de Shimmer (Reflexo de luz) */
         .bar::after {
             content: "";
             position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
+            top: 0; left: -150%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             animation: progress-shimmer 3s infinite linear;
         }
 
@@ -250,7 +270,6 @@
             100% { left: 100%; }
         }
 
-        /* MARCADOR VERMELHO ALERTA */
         .progress-marker {
             position: absolute;
             right: -2px; 
@@ -267,7 +286,6 @@
             transition: all 0.3s ease;
         }
 
-        /* BALÃO NA COR DOURADA DA BARRA */
         .date-tooltip {
             position: absolute;
             bottom: 28px;
@@ -341,13 +359,11 @@
 </head>
 <body>
 
-    <!-- TELA DE ENTRADA (MANTIDA ORIGINAL) -->
     <div id="splash-screen">
         <img src="brasao.png" alt="PCRR" class="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
         <h2 class="splash-text">A Turma do Impossível</h2>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <div class="app-container" id="main-content">
         <header class="brasao-wrapper">
             <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
@@ -383,7 +399,6 @@
             </div>
             <div class="track">
                 <div class="bar" id="bar"></div>
-                <!-- Marcador Vermelho e Balão Dourado -->
                 <div class="progress-marker" id="marker"></div>
                 <div class="date-tooltip" id="tooltip">04/09/26</div>
             </div>
@@ -422,7 +437,8 @@
                 splash.style.opacity = '0';
                 setTimeout(() => {
                     splash.style.visibility = 'hidden';
-                    main.style.opacity = '1';
+                    // ADICIONA A CLASSE PARA INICIAR AS ANIMAÇÕES DE DOMINÓ
+                    main.classList.add('started');
                 }, 1000);
             }, 3500);
         });
@@ -441,7 +457,6 @@
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.title = `Faltam ${d} dias | PCRR`;
             document.getElementById('days').innerText = d.toString().padStart(2, '0');
             document.getElementById('hours').innerText = h.toString().padStart(2, '0');
             document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
