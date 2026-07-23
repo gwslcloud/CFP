@@ -306,7 +306,7 @@
                         await navigator.share({
                             files: [file],
                             title: 'CFP PCRR 2026',
-                            text: `Faltam ${currentDays} dias para a nossa aula inaugural!`
+                            text: `Faltam apenas ${currentDays} dias para a nossa aula inaugural!`
                         });
                     } else { alert("Navegador sem suporte a compartilhamento de imagem."); }
                     shareBtn.innerText = "Compartilhar no status"; shareBtn.disabled = false;
