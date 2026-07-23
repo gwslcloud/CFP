@@ -43,6 +43,7 @@
             overflow-x: hidden;
             position: relative;
             text-align: center;
+            perspective: 1000px; /* Necessário para o 3D */
         }
 
         /* --- SPLASH SCREEN --- */
@@ -105,6 +106,7 @@
             z-index: 0;
         }
 
+        /* --- CONTEÚDO PRINCIPAL --- */
         .app-container {
             width: 100%;
             max-width: 600px;
@@ -118,13 +120,61 @@
             transition: opacity 1.5s ease;
         }
 
-        .brasao-wrapper { margin-bottom: 2rem; }
+        /* --- BRASÃO HOLOGRÁFICO 3D --- */
+        .brasao-wrapper { 
+            margin-bottom: 2rem; 
+            position: relative;
+            padding: 20px;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+
+        .brasao-container {
+            position: relative;
+            display: inline-block;
+            overflow: hidden; /* Corta o brilho glint */
+            border-radius: 50%; /* Ajuste conforme o formato do brasão */
+        }
+
         .brasao {
             width: 160px;
             height: auto;
-            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.25));
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+            display: block;
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
         }
 
+        /* EFEITO GLINT (BRILHO PASSANTE) */
+        .brasao-container::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -150%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(255, 255, 255, 0.1) 20%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0.1) 80%,
+                transparent
+            );
+            transform: rotate(25deg);
+            z-index: 2;
+            animation: glint 4s infinite ease-in-out;
+        }
+
+        @keyframes glint {
+            0% { left: -150%; opacity: 0; }
+            10% { opacity: 1; }
+            30% { left: 150%; opacity: 0; }
+            100% { left: 150%; opacity: 0; }
+        }
+
+        /* --- RESTO DOS ELEMENTOS --- */
         .faltam-label {
             font-family: 'Cinzel', serif;
             font-size: 1.2rem;
@@ -182,12 +232,7 @@
         }
 
         /* --- PROGRESS BAR --- */
-        .progress-container { 
-            width: 100%; 
-            margin-bottom: 2.5rem; 
-            position: relative; 
-        }
-        
+        .progress-container { width: 100%; margin-bottom: 2.5rem; position: relative; }
         .progress-label {
             display: flex;
             justify-content: space-between;
@@ -197,7 +242,6 @@
             font-weight: 700;
             text-transform: uppercase;
         }
-
         .track {
             height: 8px;
             background: rgba(255, 255, 255, 0.05);
@@ -206,96 +250,51 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: visible; 
         }
-
         .bar {
-            height: 100%;
-            width: 0%;
+            height: 100%; width: 0%;
             background: linear-gradient(90deg, #1e293b, var(--gold));
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
             transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 10px;
-            position: relative;
-            z-index: 1;
+            position: relative; z-index: 1;
         }
 
-        /* MARCADOR VERMELHO ALERTA */
         .progress-marker {
-            position: absolute;
-            right: -2px; 
-            top: 50%;
-            transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
-            background: var(--red-alert);
-            border: 2px solid #fff;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 5;
-            box-shadow: 0 0 12px var(--red-alert);
-            transition: all 0.3s ease;
+            position: absolute; right: -2px; top: 50%; transform: translateY(-50%);
+            width: 12px; height: 12px;
+            background: var(--red-alert); border: 2px solid #fff;
+            border-radius: 50%; cursor: pointer; z-index: 5;
+            box-shadow: 0 0 12px var(--red-alert); transition: all 0.3s ease;
         }
 
-        /* BALÃO NA COR DOURADA DA BARRA */
         .date-tooltip {
-            position: absolute;
-            bottom: 28px;
-            right: -10px; 
+            position: absolute; bottom: 28px; right: -10px; 
             background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-            color: var(--navy-black); /* Texto escuro para contraste no dourado */
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 900;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--navy-black); padding: 5px 12px;
+            border-radius: 4px; font-size: 0.85rem; font-weight: 900;
+            white-space: nowrap; opacity: 0; visibility: hidden;
+            transform: translateY(10px); transition: all 0.3s ease;
+            pointer-events: none; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
-
-        /* Triângulo do balão (cor dourada) */
         .date-tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            right: 10px;
-            border-width: 6px;
-            border-style: solid;
+            content: ""; position: absolute; top: 100%; right: 10px;
+            border-width: 6px; border-style: solid;
             border-color: var(--gold) transparent transparent transparent;
         }
-
-        .date-tooltip.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
+        .date-tooltip.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
         #install-btn {
-            display: none;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 10px 24px;
-            border-radius: 4px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            margin-bottom: 2.5rem;
+            display: none; background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold); color: var(--gold);
+            padding: 10px 24px; border-radius: 4px;
+            font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 2px; cursor: pointer; margin-bottom: 2.5rem;
         }
 
         .footer-brand {
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            color: var(--text-gray);
-            opacity: 0.6;
-            text-transform: uppercase;
-            width: 100%;
-            line-height: 1.5;
+            font-size: 0.65rem; letter-spacing: 2px;
+            color: var(--text-gray); opacity: 0.6;
+            text-transform: uppercase; width: 100%;
         }
 
         @media (min-width: 768px) {
@@ -304,7 +303,6 @@
             .number { font-size: 4.5rem; }
             .brasao { width: 220px; }
             .faltam-label { font-size: 1.4rem; letter-spacing: 12px; }
-            .target-phrase { font-size: 1.3rem; letter-spacing: 5px; }
         }
     </style>
 </head>
@@ -316,8 +314,10 @@
     </div>
 
     <div class="app-container" id="main-content">
-        <header class="brasao-wrapper">
-            <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+        <header class="brasao-wrapper" id="brasao-3d">
+            <div class="brasao-container">
+                <img src="brasao.png" alt="Brasão PCRR" class="brasao" id="brasao-img" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+            </div>
         </header>
 
         <span class="faltam-label">Faltam</span>
@@ -350,7 +350,6 @@
             </div>
             <div class="track">
                 <div class="bar" id="bar"></div>
-                <!-- Marcador Vermelho e Balão Dourado -->
                 <div class="progress-marker" id="marker"></div>
                 <div class="date-tooltip" id="tooltip">04/09/26</div>
             </div>
@@ -367,6 +366,27 @@
         const target = new Date('2026-09-04T00:00:00').getTime();
         const start = new Date('2024-01-01T00:00:00').getTime();
 
+        // --- LÓGICA DO BRASÃO 3D ---
+        const wrapper = document.getElementById('brasao-3d');
+        const img = document.getElementById('brasao-img');
+
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 15;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 15;
+            
+            wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
+            
+            // Sombra dinâmica baseada na inclinação
+            img.style.filter = `drop-shadow(${xAxis}px ${yAxis}px 25px rgba(0,0,0,0.6))`;
+        });
+
+        // Resetar posição quando o mouse sai
+        document.addEventListener('mouseleave', () => {
+            wrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            img.style.filter = `drop-shadow(0 15px 25px rgba(0,0,0,0.6))`;
+        });
+
+        // --- MARCADO E TOOLTIP ---
         const marker = document.getElementById('marker');
         const tooltip = document.getElementById('tooltip');
 
@@ -382,6 +402,7 @@
             tooltip.classList.remove('show');
         });
 
+        // --- SPLASH E COUNTDOWN ---
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
@@ -397,18 +418,15 @@
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = target - now;
-
             if (diff <= 0) {
                 document.getElementById('main-content').innerHTML = `<h1 style='color:var(--gold); font-family:Cinzel;'>MISSÃO INICIADA</h1>`;
                 return;
             }
-
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.title = `Faltam ${d} dias | PCRR`;
             document.getElementById('days').innerText = d.toString().padStart(2, '0');
             document.getElementById('hours').innerText = h.toString().padStart(2, '0');
             document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
@@ -425,8 +443,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
-
+        // PWA Install
         let deferredPrompt;
         const installBtn = document.getElementById('install-btn');
         window.addEventListener('beforeinstallprompt', (e) => {
