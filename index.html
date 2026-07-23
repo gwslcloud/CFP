@@ -45,7 +45,7 @@
             text-align: center;
         }
 
-        /* --- SPLASH SCREEN --- */
+        /* --- SPLASH SCREEN (MANTIDA ORIGINAL) --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -104,7 +104,7 @@
             z-index: 0;
         }
 
-        /* --- CONTEÚDO --- */
+        /* --- EFEITO DOMINÓ --- */
         .app-container {
             width: 100%;
             max-width: 600px;
@@ -136,7 +136,6 @@
 
         @keyframes revealItem { to { opacity: 1; transform: translateY(0); } }
 
-        /* DELAYS EFEITO DOMINÓ */
         .app-container.started .brasao-wrapper { animation-delay: 0.1s; }
         .app-container.started .faltam-label { animation-delay: 0.2s; }
         .app-container.started .card:nth-child(1) { animation-delay: 0.3s; }
@@ -147,6 +146,7 @@
         .app-container.started .progress-container { animation-delay: 1.0s; }
         .app-container.started .btn-group { animation-delay: 1.2s; }
 
+        /* BRASÃO COM GLOW */
         .brasao { width: 160px; height: auto; animation: breathe-glow 4s infinite ease-in-out; }
         @keyframes breathe-glow {
             0%, 100% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
@@ -160,24 +160,24 @@
         .unit { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700; }
         .target-phrase { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 3px; color: var(--text-gray); margin-bottom: 3rem; text-transform: uppercase; }
 
-        /* --- BARRA DE PROGRESSO AJUSTADA --- */
+        /* --- BARRA DE PROGRESSO REFINADA --- */
         .progress-container { width: 100%; margin-bottom: 2.5rem; }
         
         .progress-label {
             display: flex;
             justify-content: space-between;
             font-size: 0.65rem;
-            font-weight: 900;
+            font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 10px;
-            /* Gradiente no texto */
-            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--gold); /* Cor amarelo padrão dos botões */
+            letter-spacing: 1px;
         }
 
         .track { height: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); }
         .bar { height: 100%; width: 0%; background: linear-gradient(90deg, #1e293b, var(--gold)); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); transition: width 1.5s ease; border-radius: 10px; position: relative; overflow: hidden; }
+        
+        /* SHIMMER NA BARRA */
         .bar::after { content: ""; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: progress-shimmer 3s infinite linear; }
         @keyframes progress-shimmer { 0% { left: -150%; } 50%, 100% { left: 100%; } }
 
@@ -203,14 +203,15 @@
         .action-btn:active { background: var(--gold); color: var(--navy-black); }
         #install-btn { display: none; }
 
-        /* --- RODAPÉ MARCA D'ÁGUA --- */
+        /* --- RODAPÉ ESTILO MARCA D'ÁGUA --- */
         .footer-brand {
-            font-size: 0.55rem;
-            letter-spacing: 3px;
+            font-size: 0.5rem; /* Menor */
+            letter-spacing: 4px; /* Mais espaçado */
             color: var(--text-gray);
-            opacity: 0.3; /* Mais discreto */
+            opacity: 0.15; /* Bem discreto */
             text-transform: uppercase;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            pointer-events: none;
         }
 
         @media (min-width: 768px) {
