@@ -18,7 +18,7 @@
             --gold: #D4AF37;
             --gold-bright: #F3DFA2;
             --gold-muted: rgba(212, 175, 55, 0.4);
-            --red-alert: #cc0000; /* Vermelho Tático */
+            --red-alert: #cc0000;
             --navy-black: #05070a;
             --tactical-blue: #0a1120;
             --text-gray: #cbd5e1;
@@ -105,7 +105,6 @@
             z-index: 0;
         }
 
-        /* --- CONTEÚDO PRINCIPAL --- */
         .app-container {
             width: 100%;
             max-width: 600px;
@@ -182,7 +181,7 @@
             width: 100%;
         }
 
-        /* --- PROGRESS BAR AJUSTADA --- */
+        /* --- PROGRESS BAR --- */
         .progress-container { 
             width: 100%; 
             margin-bottom: 2.5rem; 
@@ -219,7 +218,7 @@
             z-index: 1;
         }
 
-        /* MARCADOR VERMELHO */
+        /* MARCADOR VERMELHO ALERTA */
         .progress-marker {
             position: absolute;
             right: -2px; 
@@ -236,37 +235,36 @@
             transition: all 0.3s ease;
         }
 
-        .progress-marker:active { transform: translateY(-50%) scale(1.4); }
-
-        /* TOOLTIP CURTO E ALINHADO PARA NÃO VAZAR */
+        /* BALÃO NA COR DOURADA DA BARRA */
         .date-tooltip {
             position: absolute;
             bottom: 28px;
-            right: -10px; /* Ajustado para ficar dentro da tela */
-            background: var(--red-alert);
-            color: #fff;
-            padding: 5px 10px;
+            right: -10px; 
+            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+            color: var(--navy-black); /* Texto escuro para contraste no dourado */
+            padding: 5px 12px;
             border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 800;
+            font-size: 0.85rem;
+            font-weight: 900;
             white-space: nowrap;
             opacity: 0;
             visibility: hidden;
             transform: translateY(10px);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* Triângulo do balão ajustado */
+        /* Triângulo do balão (cor dourada) */
         .date-tooltip::after {
             content: "";
             position: absolute;
             top: 100%;
             right: 10px;
-            border-width: 5px;
+            border-width: 6px;
             border-style: solid;
-            border-color: var(--red-alert) transparent transparent transparent;
+            border-color: var(--gold) transparent transparent transparent;
         }
 
         .date-tooltip.show {
@@ -352,7 +350,7 @@
             </div>
             <div class="track">
                 <div class="bar" id="bar"></div>
-                <!-- Marcador Vermelho e Data Curta -->
+                <!-- Marcador Vermelho e Balão Dourado -->
                 <div class="progress-marker" id="marker"></div>
                 <div class="date-tooltip" id="tooltip">04/09/26</div>
             </div>
@@ -376,7 +374,7 @@
             e.stopPropagation();
             tooltip.classList.toggle('show');
             if(tooltip.classList.contains('show')) {
-                setTimeout(() => tooltip.classList.remove('show'), 3000);
+                setTimeout(() => tooltip.classList.remove('show'), 3500);
             }
         });
 
