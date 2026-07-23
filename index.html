@@ -104,7 +104,7 @@
             z-index: 0;
         }
 
-        /* --- EFEITO DOMINÓ --- */
+        /* --- CONTEÚDO --- */
         .app-container {
             width: 100%;
             max-width: 600px;
@@ -114,13 +114,12 @@
             align-items: center;
             position: relative;
             z-index: 10;
-            opacity: 0; /* Inicia invisível para o fade-in do container */
+            opacity: 0;
             transition: opacity 0.8s ease;
         }
-
         .app-container.started { opacity: 1; }
 
-        .brasao-wrapper, .faltam-label, .card, .target-phrase, .progress-container, footer, #install-btn {
+        .brasao-wrapper, .faltam-label, .card, .target-phrase, .progress-container, footer, .btn-group {
             opacity: 0;
             transform: translateY(15px);
         }
@@ -131,15 +130,13 @@
         .app-container.started .target-phrase,
         .app-container.started .progress-container,
         .app-container.started footer,
-        .app-container.started #install-btn {
+        .app-container.started .btn-group {
             animation: revealItem 0.5s ease forwards;
         }
 
-        @keyframes revealItem {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes revealItem { to { opacity: 1; transform: translateY(0); } }
 
-        /* DELAYS CURTOS E RÁPIDOS */
+        /* DELAYS */
         .app-container.started .brasao-wrapper { animation-delay: 0.1s; }
         .app-container.started .faltam-label { animation-delay: 0.2s; }
         .app-container.started .card:nth-child(1) { animation-delay: 0.3s; }
@@ -148,156 +145,65 @@
         .app-container.started .card:nth-child(4) { animation-delay: 0.6s; }
         .app-container.started .target-phrase { animation-delay: 0.8s; }
         .app-container.started .progress-container { animation-delay: 1.0s; }
-        .app-container.started footer { animation-delay: 1.2s; }
+        .app-container.started .btn-group { animation-delay: 1.2s; }
 
-        /* --- BRASÃO COM GLOW --- */
-        .brasao-wrapper { margin-bottom: 2rem; }
-        .brasao {
-            width: 160px;
-            height: auto;
-            animation: breathe-glow 4s infinite ease-in-out;
-        }
+        .brasao { width: 160px; height: auto; animation: breathe-glow 4s infinite ease-in-out; }
         @keyframes breathe-glow {
             0%, 100% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
             50% { filter: drop-shadow(0 0 35px rgba(212, 175, 55, 0.6)); }
         }
 
-        .faltam-label {
-            font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            width: 100%;
-        }
+        .faltam-label { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 8px; color: var(--gold); margin-bottom: 1.5rem; font-weight: 700; }
+        .countdown-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2.5rem; width: 100%; }
+        .card { background: var(--glass); backdrop-filter: blur(12px); border: 1px solid var(--gold-muted); border-radius: 12px; padding: 1.5rem 0.5rem; }
+        .number { display: block; font-size: 2.8rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
+        .unit { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700; }
+        .target-phrase { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 3px; color: var(--text-gray); margin-bottom: 3rem; text-transform: uppercase; }
 
-        .countdown-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-            width: 100%;
-        }
+        /* BARRA */
+        .progress-container { width: 100%; margin-bottom: 2.5rem; }
+        .track { height: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .bar { height: 100%; width: 0%; background: linear-gradient(90deg, #1e293b, var(--gold)); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); transition: width 1.5s ease; border-radius: 10px; position: relative; overflow: hidden; }
+        .bar::after { content: ""; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: progress-shimmer 3s infinite linear; }
+        @keyframes progress-shimmer { 0% { left: -150%; } 50%, 100% { left: 100%; } }
 
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--gold-muted);
-            border-radius: 12px;
-            padding: 1.5rem 0.5rem;
-        }
-
-        .number {
-            display: block;
-            font-size: 2.8rem;
-            font-weight: 900;
-            line-height: 1;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .unit {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--gold);
-            font-weight: 700;
-        }
-
-        .target-phrase {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--text-gray);
-            margin-bottom: 3rem;
-            width: 100%;
-        }
-
-        /* --- PROGRESS BAR COM SHIMMER --- */
-        .progress-container { width: 100%; margin-bottom: 2.5rem; position: relative; }
-        .progress-label {
-            display: flex; justify-content: space-between;
-            font-size: 0.65rem; color: var(--gold);
-            margin-bottom: 10px; font-weight: 700; text-transform: uppercase;
-        }
-        .track {
-            height: 8px; background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px; position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1); overflow: visible; 
-        }
-        .bar {
-            height: 100%; width: 0%;
-            background: linear-gradient(90deg, #1e293b, var(--gold));
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 10px; position: relative; z-index: 1; overflow: hidden;
-        }
-        .bar::after {
-            content: ""; position: absolute; top: 0; left: -150%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: progress-shimmer 3s infinite linear;
-        }
-        @keyframes progress-shimmer {
-            0% { left: -150%; }
-            50%, 100% { left: 100%; }
-        }
-
-        .progress-marker {
-            position: absolute; right: -2px; top: 50%; transform: translateY(-50%);
-            width: 12px; height: 12px;
-            background: var(--red-alert); border: 2px solid #fff;
-            border-radius: 50%; cursor: pointer; z-index: 5;
-            box-shadow: 0 0 12px var(--red-alert); transition: all 0.3s ease;
-        }
-
-        .date-tooltip {
-            position: absolute; bottom: 28px; right: -10px; 
-            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-            color: var(--navy-black); padding: 5px 12px;
-            border-radius: 4px; font-size: 0.85rem; font-weight: 900;
-            white-space: nowrap; opacity: 0; visibility: hidden;
-            transform: translateY(10px); transition: all 0.3s ease;
-            pointer-events: none; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-        }
-        .date-tooltip::after {
-            content: ""; position: absolute; top: 100%; right: 10px;
-            border-width: 6px; border-style: solid;
-            border-color: var(--gold) transparent transparent transparent;
-        }
+        .progress-marker { position: absolute; right: -2px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: var(--red-alert); border: 2px solid #fff; border-radius: 50%; cursor: pointer; z-index: 5; box-shadow: 0 0 12px var(--red-alert); }
+        .date-tooltip { position: absolute; bottom: 28px; right: -10px; background: linear-gradient(135deg, var(--gold-bright), var(--gold)); color: var(--navy-black); padding: 5px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: 900; opacity: 0; visibility: hidden; transition: 0.3s; pointer-events: none; }
         .date-tooltip.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
-        #install-btn {
-            display: none; background: rgba(212, 175, 55, 0.1);
-            border: 1px solid var(--gold); color: var(--gold);
-            padding: 10px 24px; border-radius: 4px;
-            font-size: 0.7rem; text-transform: uppercase;
-            letter-spacing: 2px; cursor: pointer; margin-bottom: 2.5rem;
+        /* --- BOTÕES --- */
+        .btn-group { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 300px; margin-bottom: 2.5rem; }
+        .action-btn {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
+        .action-btn:active { background: var(--gold); color: var(--navy-black); }
+        #install-btn { display: none; }
 
-        .footer-brand {
-            font-size: 0.65rem; letter-spacing: 2px;
-            color: var(--text-gray); opacity: 0.6;
-            text-transform: uppercase; width: 100%;
-        }
+        .footer-brand { font-size: 0.65rem; letter-spacing: 2px; color: var(--text-gray); opacity: 0.6; text-transform: uppercase; }
 
         @media (min-width: 768px) {
             .app-container { max-width: 850px; }
             .countdown-grid { grid-template-columns: repeat(4, 1fr); }
             .number { font-size: 4.5rem; }
             .brasao { width: 220px; }
+            .btn-group { flex-direction: row; max-width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <img src="brasao.png" alt="PCRR" class="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+        <img src="brasao.png" alt="PCRR" class="splash-brasao" id="brasao-img" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
         <h2 class="splash-text">A Turma do Impossível</h2>
     </div>
 
@@ -326,62 +232,56 @@
             </div>
         </div>
 
-        <button id="install-btn">Adicionar à Tela Inicial</button>
+        <div class="btn-group">
+            <button id="install-btn" class="action-btn">Adicionar à tela inicial</button>
+            <button id="share-btn" class="action-btn">Compartilhar no status</button>
+        </div>
+
         <footer class="footer-brand">Comissão Oficial do Cadastro Reserva da PCRR</footer>
     </div>
+
+    <!-- Canvas invisível para gerar a imagem -->
+    <canvas id="share-canvas" style="display:none;" width="1080" height="1920"></canvas>
 
     <script>
         const target = new Date('2026-09-04T00:00:00').getTime();
         const start = new Date('2024-01-01T00:00:00').getTime();
+        let currentDays = 0;
 
+        // Tooltip logic
         const marker = document.getElementById('marker');
         const tooltip = document.getElementById('tooltip');
-
         marker.addEventListener('click', (e) => {
             e.stopPropagation();
             tooltip.classList.toggle('show');
-            if(tooltip.classList.contains('show')) {
-                setTimeout(() => tooltip.classList.remove('show'), 3500);
-            }
+            if(tooltip.classList.contains('show')) setTimeout(() => tooltip.classList.remove('show'), 3500);
         });
-
         document.addEventListener('click', () => tooltip.classList.remove('show'));
 
-        // FUNÇÃO PARA LIBERAR A TELA
+        // Start App
         function startApp() {
             const splash = document.getElementById('splash-screen');
             const main = document.getElementById('main-content');
-            if (splash.style.display === 'none') return; // Evita rodar duas vezes
-
             splash.style.opacity = '0';
             setTimeout(() => {
                 splash.style.display = 'none';
                 main.classList.add('started');
             }, 600);
         }
+        document.addEventListener('DOMContentLoaded', () => setTimeout(startApp, 1800));
 
-        // Tenta iniciar no DOMContentLoaded (mais rápido) e usa o load como backup
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(startApp, 1500); // 1.5s de exibição da frase
-        });
-
-        window.addEventListener('load', () => {
-            // Se o DOMContentLoaded falhar por algum motivo, o load garante a abertura
-            setTimeout(startApp, 1500);
-        });
-
+        // Countdown
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = target - now;
-            if (diff <= 0) {
-                document.getElementById('main-content').innerHTML = `<h1 style='color:var(--gold); font-family:Cinzel;'>MISSÃO INICIADA</h1>`;
-                return;
-            }
+            if (diff <= 0) return;
+
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
 
+            currentDays = d;
             document.getElementById('days').innerText = d.toString().padStart(2, '0');
             document.getElementById('hours').innerText = h.toString().padStart(2, '0');
             document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
@@ -394,12 +294,92 @@
             document.getElementById('bar').style.width = percent + '%';
             document.getElementById('pct').innerText = percent.toFixed(2) + '%';
         }
-
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+        // --- LÓGICA AVANÇADA DE COMPARTILHAMENTO ---
+        const shareBtn = document.getElementById('share-btn');
+        const canvas = document.getElementById('share-canvas');
+        const ctx = canvas.getContext('2d');
 
+        shareBtn.addEventListener('click', async () => {
+            shareBtn.innerText = "Gerando card...";
+            shareBtn.disabled = true;
+
+            try {
+                // 1. Desenhar Fundo Tático
+                ctx.fillStyle = "#05070a";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Gradiente tático azul no centro
+                const grad = ctx.createRadialGradient(540, 600, 0, 540, 600, 800);
+                grad.addColorStop(0, "#0a1120");
+                grad.addColorStop(1, "#05070a");
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // 2. Carregar e desenhar o Brasão
+                const img = new Image();
+                img.crossOrigin = "anonymous"; 
+                img.src = document.getElementById('brasao-img').src;
+                
+                await new Promise(resolve => img.onload = resolve);
+                ctx.drawImage(img, 340, 400, 400, 400);
+
+                // 3. Desenhar Textos
+                ctx.textAlign = "center";
+                
+                // Label Dourada
+                ctx.fillStyle = "#D4AF37";
+                ctx.font = "bold 50px Montserrat";
+                ctx.fillText("FALTAM", 540, 950);
+
+                // O Número principal
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "900 280px Montserrat";
+                ctx.fillText(currentDays, 540, 1250);
+
+                // Unidade
+                ctx.fillStyle = "#D4AF37";
+                ctx.font = "bold 60px Montserrat";
+                ctx.fillText("DIAS", 540, 1350);
+
+                // Frase final
+                ctx.fillStyle = "#cbd5e1";
+                ctx.font = "40px Cinzel";
+                ctx.fillText("PARA O INÍCIO DA AULA INAUGURAL", 540, 1500);
+
+                // Marca d'água da comissão
+                ctx.globalAlpha = 0.5;
+                ctx.font = "25px Montserrat";
+                ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
+
+                // 4. Converter para arquivo e compartilhar
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], 'cfp-pcrr-status.png', { type: 'image/png' });
+                    
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            files: [file],
+                            title: 'CFP PCRR 2026',
+                            text: `Faltam ${currentDays} dias para a nossa aula inaugural! PCRR - Roraima.`
+                        });
+                    } else {
+                        alert("Seu navegador não suporta compartilhamento de imagem. Tente usar o Chrome ou Safari no celular.");
+                    }
+                    shareBtn.innerText = "Compartilhar no status";
+                    shareBtn.disabled = false;
+                });
+
+            } catch (err) {
+                console.error(err);
+                alert("Erro ao gerar imagem. Verifique sua conexão.");
+                shareBtn.innerText = "Compartilhar no status";
+                shareBtn.disabled = false;
+            }
+        });
+
+        // PWA Install
         let deferredPrompt;
         const installBtn = document.getElementById('install-btn');
         window.addEventListener('beforeinstallprompt', (e) => {
