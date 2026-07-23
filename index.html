@@ -45,7 +45,7 @@
             text-align: center;
         }
 
-        /* --- SPLASH SCREEN --- */
+        /* --- SPLASH SCREEN (MANTIDA ORIGINAL) --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -118,11 +118,19 @@
             transition: opacity 1.5s ease;
         }
 
+        /* --- BRASÃO COM GLOW DINÂMICO --- */
         .brasao-wrapper { margin-bottom: 2rem; }
         .brasao {
             width: 160px;
             height: auto;
-            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.25));
+            /* Animação de respiração do brilho */
+            animation: breathe-glow 4s infinite ease-in-out;
+        }
+
+        @keyframes breathe-glow {
+            0% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
+            50% { filter: drop-shadow(0 0 35px rgba(212, 175, 55, 0.6)); }
+            100% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
         }
 
         .faltam-label {
@@ -181,7 +189,7 @@
             width: 100%;
         }
 
-        /* --- PROGRESS BAR --- */
+        /* --- PROGRESS BAR COM SHIMMER --- */
         .progress-container { 
             width: 100%; 
             margin-bottom: 2.5rem; 
@@ -216,6 +224,30 @@
             border-radius: 10px;
             position: relative;
             z-index: 1;
+            overflow: hidden; /* Importante para o shimmer */
+        }
+
+        /* Efeito de Shimmer (Reflexo de luz) */
+        .bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: progress-shimmer 3s infinite linear;
+        }
+
+        @keyframes progress-shimmer {
+            0% { left: -150%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
         }
 
         /* MARCADOR VERMELHO ALERTA */
@@ -241,7 +273,7 @@
             bottom: 28px;
             right: -10px; 
             background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-            color: var(--navy-black); /* Texto escuro para contraste no dourado */
+            color: var(--navy-black); 
             padding: 5px 12px;
             border-radius: 4px;
             font-size: 0.85rem;
@@ -256,7 +288,6 @@
             border: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* Triângulo do balão (cor dourada) */
         .date-tooltip::after {
             content: "";
             position: absolute;
@@ -310,11 +341,13 @@
 </head>
 <body>
 
+    <!-- TELA DE ENTRADA (MANTIDA ORIGINAL) -->
     <div id="splash-screen">
         <img src="brasao.png" alt="PCRR" class="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
         <h2 class="splash-text">A Turma do Impossível</h2>
     </div>
 
+    <!-- CONTEÚDO PRINCIPAL -->
     <div class="app-container" id="main-content">
         <header class="brasao-wrapper">
             <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
