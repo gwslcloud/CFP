@@ -25,12 +25,7 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -45,7 +40,7 @@
             text-align: center;
         }
 
-        /* --- SPLASH SCREEN (MANTIDA ORIGINAL) --- */
+        /* --- SPLASH SCREEN --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -104,7 +99,7 @@
             z-index: 0;
         }
 
-        /* --- EFEITO DOMINÓ --- */
+        /* --- CONTEÚDO --- */
         .app-container {
             width: 100%;
             max-width: 600px;
@@ -136,6 +131,7 @@
 
         @keyframes revealItem { to { opacity: 1; transform: translateY(0); } }
 
+        /* DELAYS */
         .app-container.started .brasao-wrapper { animation-delay: 0.1s; }
         .app-container.started .faltam-label { animation-delay: 0.2s; }
         .app-container.started .card:nth-child(1) { animation-delay: 0.3s; }
@@ -146,7 +142,6 @@
         .app-container.started .progress-container { animation-delay: 1.0s; }
         .app-container.started .btn-group { animation-delay: 1.2s; }
 
-        /* BRASÃO COM GLOW */
         .brasao { width: 160px; height: auto; animation: breathe-glow 4s infinite ease-in-out; }
         @keyframes breathe-glow {
             0%, 100% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
@@ -160,24 +155,11 @@
         .unit { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700; }
         .target-phrase { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 3px; color: var(--text-gray); margin-bottom: 3rem; text-transform: uppercase; }
 
-        /* --- BARRA DE PROGRESSO REFINADA --- */
+        /* PROGRESSO */
         .progress-container { width: 100%; margin-bottom: 2.5rem; }
-        
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            color: var(--gold); /* Cor amarelo padrão dos botões */
-            letter-spacing: 1px;
-        }
-
+        .progress-label { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; color: var(--gold); letter-spacing: 1px; }
         .track { height: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); }
         .bar { height: 100%; width: 0%; background: linear-gradient(90deg, #1e293b, var(--gold)); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); transition: width 1.5s ease; border-radius: 10px; position: relative; overflow: hidden; }
-        
-        /* SHIMMER NA BARRA */
         .bar::after { content: ""; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: progress-shimmer 3s infinite linear; }
         @keyframes progress-shimmer { 0% { left: -150%; } 50%, 100% { left: 100%; } }
 
@@ -185,34 +167,12 @@
         .date-tooltip { position: absolute; bottom: 28px; right: -10px; background: linear-gradient(135deg, var(--gold-bright), var(--gold)); color: var(--navy-black); padding: 5px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: 900; opacity: 0; visibility: hidden; transition: 0.3s; pointer-events: none; }
         .date-tooltip.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
-        /* --- BOTÕES --- */
+        /* BOTÕES */
         .btn-group { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 300px; margin-bottom: 2.5rem; }
-        .action-btn {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 12px 20px;
-            border-radius: 4px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .action-btn:active { background: var(--gold); color: var(--navy-black); }
+        .action-btn { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); color: var(--gold); padding: 12px 20px; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; }
         #install-btn { display: none; }
 
-        /* --- RODAPÉ ESTILO MARCA D'ÁGUA --- */
-        .footer-brand {
-            font-size: 0.5rem; /* Menor */
-            letter-spacing: 4px; /* Mais espaçado */
-            color: var(--text-gray);
-            opacity: 0.15; /* Bem discreto */
-            text-transform: uppercase;
-            margin-top: 1.5rem;
-            pointer-events: none;
-        }
+        .footer-brand { font-size: 0.5rem; letter-spacing: 4px; color: var(--text-gray); opacity: 0.15; text-transform: uppercase; margin-top: 1.5rem; pointer-events: none; }
 
         @media (min-width: 768px) {
             .app-container { max-width: 850px; }
@@ -247,10 +207,7 @@
         <h2 class="target-phrase">Para o início da aula inaugural</h2>
 
         <div class="progress-container">
-            <div class="progress-label">
-                <span>Progresso</span>
-                <span id="pct">0.00%</span>
-            </div>
+            <div class="progress-label"><span>Progresso</span><span id="pct">0.00%</span></div>
             <div class="track">
                 <div class="bar" id="bar"></div>
                 <div class="progress-marker" id="marker"></div>
@@ -273,7 +230,6 @@
         const start = new Date('2024-01-01T00:00:00').getTime();
         let currentDays = 0;
 
-        // Tooltip logic
         const marker = document.getElementById('marker');
         const tooltip = document.getElementById('tooltip');
         marker.addEventListener('click', (e) => {
@@ -283,46 +239,32 @@
         });
         document.addEventListener('click', () => tooltip.classList.remove('show'));
 
-        // Start App
         function startApp() {
             const splash = document.getElementById('splash-screen');
             const main = document.getElementById('main-content');
             splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-                main.classList.add('started');
-            }, 600);
+            setTimeout(() => { splash.style.display = 'none'; main.classList.add('started'); }, 600);
         }
         document.addEventListener('DOMContentLoaded', () => setTimeout(startApp, 1800));
 
-        // Countdown
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = target - now;
             if (diff <= 0) return;
-
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-
             currentDays = d;
             document.getElementById('days').innerText = d.toString().padStart(2, '0');
-            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
-            document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
-            document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
-
-            const total = target - start;
-            const current = now - start;
-            let percent = (current / total) * 100;
-            percent = Math.min(Math.max(percent, 0), 100);
-            document.getElementById('bar').style.width = percent + '%';
-            document.getElementById('pct').innerText = percent.toFixed(2) + '%';
+            document.getElementById('hours').innerText = Math.floor((diff % (86400000)) / 3600000).toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+            const pct = Math.min(Math.max(((now - start) / (target - start)) * 100, 0), 100);
+            document.getElementById('bar').style.width = pct + '%';
+            document.getElementById('pct').innerText = pct.toFixed(2) + '%';
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // SHARE LOGIC
+        // LÓGICA DE COMPARTILHAMENTO
         const shareBtn = document.getElementById('share-btn');
         const canvas = document.getElementById('share-canvas');
         const ctx = canvas.getContext('2d');
@@ -332,73 +274,50 @@
             shareBtn.disabled = true;
 
             try {
+                // Background
                 ctx.fillStyle = "#05070a";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                const grad = ctx.createRadialGradient(540, 600, 0, 540, 600, 800);
+                ctx.fillRect(0, 0, 1080, 1920);
+                const grad = ctx.createRadialGradient(540, 960, 0, 540, 960, 1000);
                 grad.addColorStop(0, "#0a1120");
                 grad.addColorStop(1, "#05070a");
                 ctx.fillStyle = grad;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, 1080, 1920);
 
                 const img = new Image();
                 img.crossOrigin = "anonymous"; 
                 img.src = document.getElementById('brasao-img').src;
-                await new Promise(resolve => img.onload = resolve);
-                ctx.drawImage(img, 340, 400, 400, 400);
+                await new Promise(res => img.onload = res);
+                
+                // Cálculo de proporção para não distorcer
+                const logoW = 480;
+                const logoH = (img.height / img.width) * logoW;
+                ctx.drawImage(img, (1080 - logoW)/2, 350, logoW, logoH);
 
                 ctx.textAlign = "center";
-                ctx.fillStyle = "#D4AF37";
-                ctx.font = "bold 50px Montserrat";
-                ctx.fillText("FALTAM", 540, 950);
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "900 280px Montserrat";
-                ctx.fillText(currentDays, 540, 1250);
-                ctx.fillStyle = "#D4AF37";
-                ctx.font = "bold 60px Montserrat";
-                ctx.fillText("DIAS", 540, 1350);
-                ctx.fillStyle = "#cbd5e1";
-                ctx.font = "40px Cinzel";
-                ctx.fillText("PARA O INÍCIO DA AULA INAUGURAL", 540, 1500);
-                ctx.globalAlpha = 0.5;
-                ctx.font = "25px Montserrat";
-                ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
+                ctx.fillStyle = "#D4AF37"; ctx.font = "bold 55px Montserrat"; ctx.fillText("FALTAM", 540, 950);
+                ctx.fillStyle = "#ffffff"; ctx.font = "900 320px Montserrat"; ctx.fillText(currentDays, 540, 1250);
+                ctx.fillStyle = "#D4AF37"; ctx.font = "bold 70px Montserrat"; ctx.fillText("DIAS", 540, 1370);
+                ctx.fillStyle = "#cbd5e1"; ctx.font = "45px Cinzel"; ctx.fillText("PARA O INÍCIO DA AULA INAUGURAL", 540, 1550);
+                ctx.globalAlpha = 0.2; ctx.font = "28px Montserrat"; ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
 
                 canvas.toBlob(async (blob) => {
-                    const file = new File([blob], 'cfp-pcrr-status.png', { type: 'image/png' });
+                    const file = new File([blob], 'cfp-status.png', { type: 'image/png' });
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         await navigator.share({
                             files: [file],
                             title: 'CFP PCRR 2026',
-                            text: `Faltam ${currentDays} dias para a nossa aula inaugural! PCRR.`
+                            text: `Faltam ${currentDays} dias para a nossa aula inaugural!`
                         });
-                    } else {
-                        alert("Use Chrome ou Safari no celular para compartilhar imagem.");
-                    }
-                    shareBtn.innerText = "Compartilhar no status";
-                    shareBtn.disabled = false;
+                    } else { alert("Navegador sem suporte a compartilhamento de imagem."); }
+                    shareBtn.innerText = "Compartilhar no status"; shareBtn.disabled = false;
                 });
-            } catch (err) {
-                alert("Erro ao gerar imagem.");
-                shareBtn.innerText = "Compartilhar no status";
-                shareBtn.disabled = false;
-            }
+            } catch (err) { alert("Erro ao gerar card."); shareBtn.innerText = "Compartilhar no status"; shareBtn.disabled = false; }
         });
 
         // PWA
         let deferredPrompt;
-        const installBtn = document.getElementById('install-btn');
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = 'block';
-        });
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt = null;
-                installBtn.style.display = 'none';
-            }
-        });
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-btn').style.display = 'block'; });
+        document.getElementById('install-btn').addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } });
     </script>
 </body>
 </html>
