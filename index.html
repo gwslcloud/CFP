@@ -130,7 +130,6 @@
             text-align: left;
         }
 
-        /* A linha dourada */
         .timeline-vertical::before {
             content: '';
             position: absolute;
@@ -147,7 +146,6 @@
             padding-left: 20px;
         }
 
-        /* O Pontinho */
         .timeline-item::before {
             content: '';
             position: absolute;
@@ -182,7 +180,7 @@
 <body>
 
     <div id="splash-screen">
-        <img src="brasao.png" alt="PCRR" class="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
+        <img src="brasao.png" alt="PCRR" class="splash-brasao" id="splash-img" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
     </div>
 
     <div class="app-container" id="main-content">
@@ -201,7 +199,6 @@
 
         <h2 class="target-phrase">Para a aula inaugural</h2>
 
-        <!-- MEMORIAL DE FRUSTRAÇÃO TODA NA TELA -->
         <section class="memorial-section">
             <h3 class="memorial-title">Memorial de frustração</h3>
             <div class="timeline-vertical">
@@ -249,7 +246,6 @@
             const now = new Date().getTime();
             const diff = target - now;
             if (diff <= 0) return;
-            
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             currentDays = d;
             document.getElementById('days').innerText = d.toString().padStart(2, '0');
@@ -260,28 +256,104 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Compartilhamento
+        // LÓGICA DE COMPARTILHAMENTO CORRIGIDA
         const shareBtn = document.getElementById('share-btn');
         shareBtn.addEventListener('click', async () => {
-            shareBtn.innerText = "Gerando...";
+            shareBtn.innerText = "Preparando card...";
+            shareBtn.disabled = true;
+
             const canvas = document.getElementById('share-canvas');
             const ctx = canvas.getContext('2d');
-            
-            ctx.fillStyle = "#05070a";
-            ctx.fillRect(0, 0, 1080, 1920);
-            
-            ctx.textAlign = "center";
-            ctx.fillStyle = "#D4AF37"; ctx.font = "bold 60px Montserrat"; ctx.fillText("FALTAM", 540, 800);
-            ctx.fillStyle = "#ffffff"; ctx.font = "900 350px Montserrat"; ctx.fillText(currentDays, 540, 1150);
-            ctx.fillStyle = "#D4AF37"; ctx.font = "bold 80px Montserrat"; ctx.fillText("DIAS", 540, 1280);
-            
-            canvas.toBlob(async (blob) => {
-                const file = new File([blob], 'pcrr.png', { type: 'image/png' });
-                if (navigator.share) {
-                    await navigator.share({ files: [file], title: 'CFP PCRR' });
-                } else { alert("Use o Chrome no celular para compartilhar."); }
+
+            try {
+                // 1. Fundo Gradiente Tático
+                ctx.fillStyle = "#05070a";
+                ctx.fillRect(0, 0, 1080, 1920);
+                const grad = ctx.createRadialGradient(540, 960, 0, 540, 960, 1000);
+                grad.addColorStop(0, "#0a1120");
+                grad.addColorStop(1, "#05070a");
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, 1080, 1920);
+
+                // 2. Carregar e Desenhar Brasão
+                const img = new Image();
+                img.crossOrigin = "anonymous"; 
+                img.src = document.getElementById('brasao-img').src;
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                });
+                
+                const logoW = 480;
+                const logoH = (img.height / img.width) * logoW;
+                ctx.drawImage(img, (1080 - logoW)/2, 350, logoW, logoH);
+
+                // 3. Textos Formatados
+                ctx.textAlign = "center";
+                
+                // "FALTAM"
+                ctx.fillStyle = "#D4AF37";
+                ctx.font = "bold 55px Montserrat";
+                ctx.fillText("FALTAM", 540, 950);
+
+                // Número de Dias
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "900 320px Montserrat";
+                ctx.fillText(currentDays, 540, 1250);
+
+                // "DIAS"
+                ctx.fillStyle = "#D4AF37";
+                ctx.font = "bold 70px Montserrat";
+                ctx.fillText("DIAS", 540, 1370);
+
+                // Frase Alvo
+                ctx.fillStyle = "#cbd5e1";
+                ctx.font = "45px Cinzel";
+                ctx.fillText("PARA A AULA INAUGURAL", 540, 1550);
+
+                // Rodapé
+                ctx.globalAlpha = 0.2;
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "28px Montserrat";
+                ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
+                ctx.globalAlpha = 1.0;
+
+                // 4. Compartilhar
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], 'cfp-pcrr.png', { type: 'image/png' });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            files: [file],
+                            title: 'CFP PCRR 2026',
+                            text: `Faltam ${currentDays} dias para a nossa aula inaugural!`
+                        });
+                    } else {
+                        alert("Seu navegador não suporta compartilhamento de arquivos. Tente no Chrome pelo celular.");
+                    }
+                    shareBtn.innerText = "Compartilhar Status";
+                    shareBtn.disabled = false;
+                });
+
+            } catch (err) {
+                console.error(err);
+                alert("Erro ao gerar a imagem. Verifique sua conexão.");
                 shareBtn.innerText = "Compartilhar Status";
-            });
+                shareBtn.disabled = false;
+            }
+        });
+
+        // PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-btn').style.display = 'block';
+        });
+        document.getElementById('install-btn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt = null;
+            }
         });
     </script>
 </body>
