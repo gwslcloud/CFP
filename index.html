@@ -23,6 +23,7 @@
             --tactical-blue: #0a1120;
             --text-gray: #cbd5e1;
             --glass: rgba(255, 255, 255, 0.05);
+            --neutral-gray: #475569; /* Cor neutra para itens pendentes */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -159,6 +160,18 @@
             z-index: 2;
         }
 
+        /* ALTERAÇÃO: ÚLTIMOS 3 PONTINHOS NEUTROS */
+        .timeline-item:nth-last-child(-n+3)::before {
+            background: var(--neutral-gray);
+            box-shadow: none;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .timeline-item:nth-last-child(-n+3) .frustration-label {
+            color: var(--text-gray);
+            opacity: 0.7;
+        }
+
         .frustration-label {
             font-size: 0.85rem;
             color: #fff;
@@ -256,7 +269,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // LÓGICA DE COMPARTILHAMENTO CORRIGIDA
+        // COMPARTILHAMENTO
         const shareBtn = document.getElementById('share-btn');
         shareBtn.addEventListener('click', async () => {
             shareBtn.innerText = "Preparando card...";
@@ -266,7 +279,6 @@
             const ctx = canvas.getContext('2d');
 
             try {
-                // 1. Fundo Gradiente Tático
                 ctx.fillStyle = "#05070a";
                 ctx.fillRect(0, 0, 1080, 1920);
                 const grad = ctx.createRadialGradient(540, 960, 0, 540, 960, 1000);
@@ -275,50 +287,41 @@
                 ctx.fillStyle = grad;
                 ctx.fillRect(0, 0, 1080, 1920);
 
-                // 2. Carregar e Desenhar Brasão
                 const img = new Image();
                 img.crossOrigin = "anonymous"; 
                 img.src = document.getElementById('brasao-img').src;
-                await new Promise((resolve, reject) => {
+                await new Promise((resolve) => {
                     img.onload = resolve;
-                    img.onerror = reject;
+                    img.onerror = resolve;
                 });
                 
                 const logoW = 480;
                 const logoH = (img.height / img.width) * logoW;
                 ctx.drawImage(img, (1080 - logoW)/2, 350, logoW, logoH);
 
-                // 3. Textos Formatados
                 ctx.textAlign = "center";
-                
-                // "FALTAM"
                 ctx.fillStyle = "#D4AF37";
                 ctx.font = "bold 55px Montserrat";
                 ctx.fillText("FALTAM", 540, 950);
 
-                // Número de Dias
                 ctx.fillStyle = "#ffffff";
                 ctx.font = "900 320px Montserrat";
                 ctx.fillText(currentDays, 540, 1250);
 
-                // "DIAS"
                 ctx.fillStyle = "#D4AF37";
                 ctx.font = "bold 70px Montserrat";
                 ctx.fillText("DIAS", 540, 1370);
 
-                // Frase Alvo
                 ctx.fillStyle = "#cbd5e1";
                 ctx.font = "45px Cinzel";
                 ctx.fillText("PARA A AULA INAUGURAL", 540, 1550);
 
-                // Rodapé
                 ctx.globalAlpha = 0.2;
                 ctx.fillStyle = "#ffffff";
                 ctx.font = "28px Montserrat";
                 ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
                 ctx.globalAlpha = 1.0;
 
-                // 4. Compartilhar
                 canvas.toBlob(async (blob) => {
                     const file = new File([blob], 'cfp-pcrr.png', { type: 'image/png' });
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -328,15 +331,14 @@
                             text: `Faltam ${currentDays} dias para a nossa aula inaugural!`
                         });
                     } else {
-                        alert("Seu navegador não suporta compartilhamento de arquivos. Tente no Chrome pelo celular.");
+                        alert("Seu navegador não suporta compartilhamento direto. No iPhone ou Android, use o Chrome ou Safari.");
                     }
                     shareBtn.innerText = "Compartilhar Status";
                     shareBtn.disabled = false;
                 });
 
             } catch (err) {
-                console.error(err);
-                alert("Erro ao gerar a imagem. Verifique sua conexão.");
+                alert("Erro ao gerar card.");
                 shareBtn.innerText = "Compartilhar Status";
                 shareBtn.disabled = false;
             }
