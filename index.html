@@ -1,323 +1,732 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CFP PCRR 2026</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#05070a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="brasao.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#05070a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>CFP PCRR 2026 — Contagem Regressiva</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --gold: #D4AF37;
-            --gold-bright: #F3DFA2;
-            --gold-muted: rgba(212, 175, 55, 0.4);
-            --red-alert: #cc0000;
-            --navy-black: #05070a;
-            --tactical-blue: #0a1120;
-            --text-gray: #cbd5e1;
-            --glass: rgba(255, 255, 255, 0.03);
-        }
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="brasao.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  <style>
+    :root {
+      --bg: #05070a;
+      --bg-soft: #09111d;
+      --gold: #d4af37;
+      --gold-light: #f1d788;
+      --gold-soft: rgba(212, 175, 55, 0.22);
+      --line: rgba(212, 175, 55, 0.22);
+      --text: #f8fafc;
+      --muted: #9aa7b8;
+      --panel: rgba(255, 255, 255, 0.035);
+      --panel-strong: rgba(255, 255, 255, 0.055);
+      --shadow: rgba(0, 0, 0, 0.44);
+    }
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--navy-black);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-            position: relative;
-            text-align: center;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        /* --- SPLASH SCREEN --- */
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--navy-black);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.6s ease;
-            padding: 20px;
-        }
+    html { color-scheme: dark; }
 
-        .splash-brasao {
-            width: 180px;
-            max-width: 60%;
-            height: auto;
-            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
-            animation: pulse-gold 2s infinite ease-in-out;
-        }
+    body {
+      min-height: 100svh;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Montserrat", sans-serif;
+    }
 
-        .splash-text {
-            font-family: 'Cinzel', serif;
-            margin-top: 2rem;
-            color: var(--gold);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-size: 1.1rem;
-            width: 100%;
-            opacity: 0;
-            animation: fadeInText 0.8s forwards 0.2s;
-        }
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
 
-        @keyframes pulse-gold {
-            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 50px rgba(212, 175, 55, 0.5)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
-        }
-        @keyframes fadeInText { to { opacity: 1; } }
+    body::before {
+      z-index: 0;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(25, 52, 84, 0.42), transparent 32%),
+        radial-gradient(circle at 50% 75%, rgba(12, 24, 42, 0.55), transparent 38%),
+        linear-gradient(180deg, #070b11 0%, #05070a 52%, #030507 100%);
+    }
 
-        /* --- FUNDO TÁTICO --- */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 24px 24px;
-            z-index: 1;
-        }
+    body::after {
+      z-index: 1;
+      opacity: 0.25;
+      background-image: radial-gradient(rgba(255,255,255,.16) .55px, transparent .55px);
+      background-size: 20px 20px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.8), transparent 76%);
+    }
 
-        body::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 35%, var(--tactical-blue) 0%, var(--navy-black) 70%);
-            z-index: 0;
-        }
+    button { font: inherit; }
 
-        /* --- CONTEÚDO --- */
-        .app-container {
-            width: 100%;
-            max-width: 600px;
-            padding: 2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 10;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-        .app-container.started { opacity: 1; }
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      background: #05070a;
+      transition: opacity .45s ease, visibility .45s ease;
+    }
 
-        .brasao-wrapper, .faltam-label, .card, .target-phrase, .progress-container, footer, .btn-group {
-            opacity: 0;
-            transform: translateY(15px);
-        }
+    .splash.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
 
-        .app-container.started .brasao-wrapper,
-        .app-container.started .faltam-label,
-        .app-container.started .card,
-        .app-container.started .target-phrase,
-        .app-container.started .progress-container,
-        .app-container.started footer,
-        .app-container.started .btn-group {
-            animation: revealItem 0.5s ease forwards;
-        }
+    .splash-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.15rem;
+      padding: 2rem;
+    }
 
-        @keyframes revealItem { to { opacity: 1; transform: translateY(0); } }
+    .splash img {
+      width: min(150px, 42vw);
+      height: auto;
+      filter: drop-shadow(0 0 28px rgba(212,175,55,.26));
+      animation: splashPulse 1.7s ease-in-out infinite;
+    }
 
-        /* DELAYS */
-        .app-container.started .brasao-wrapper { animation-delay: 0.1s; }
-        .app-container.started .faltam-label { animation-delay: 0.2s; }
-        .app-container.started .card:nth-child(1) { animation-delay: 0.3s; }
-        .app-container.started .card:nth-child(2) { animation-delay: 0.4s; }
-        .app-container.started .card:nth-child(3) { animation-delay: 0.5s; }
-        .app-container.started .card:nth-child(4) { animation-delay: 0.6s; }
-        .app-container.started .target-phrase { animation-delay: 0.8s; }
-        .app-container.started .progress-container { animation-delay: 1.0s; }
-        .app-container.started .btn-group { animation-delay: 1.2s; }
+    .splash p {
+      font-family: "Cinzel", serif;
+      color: var(--gold);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
 
-        .brasao { width: 160px; height: auto; animation: breathe-glow 4s infinite ease-in-out; }
-        @keyframes breathe-glow {
-            0%, 100% { filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2)); }
-            50% { filter: drop-shadow(0 0 35px rgba(212, 175, 55, 0.6)); }
-        }
+    @keyframes splashPulse {
+      0%, 100% { transform: scale(1); opacity: .9; }
+      50% { transform: scale(1.035); opacity: 1; }
+    }
 
-        .faltam-label { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 8px; color: var(--gold); margin-bottom: 1.5rem; font-weight: 700; }
-        .countdown-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2.5rem; width: 100%; }
-        .card { background: var(--glass); backdrop-filter: blur(12px); border: 1px solid var(--gold-muted); border-radius: 12px; padding: 1.5rem 0.5rem; }
-        .number { display: block; font-size: 2.8rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
-        .unit { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700; }
-        .target-phrase { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 3px; color: var(--text-gray); margin-bottom: 3rem; text-transform: uppercase; }
+    .app {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 760px);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: clamp(1.15rem, 4vw, 2rem) 1.25rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
 
-        /* PROGRESSO */
-        .progress-container { width: 100%; margin-bottom: 2.5rem; }
-        .progress-label { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; color: var(--gold); letter-spacing: 1px; }
-        .track { height: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .bar { height: 100%; width: 0%; background: linear-gradient(90deg, #1e293b, var(--gold)); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); transition: width 1.5s ease; border-radius: 10px; position: relative; overflow: hidden; }
-        .bar::after { content: ""; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: progress-shimmer 3s infinite linear; }
-        @keyframes progress-shimmer { 0% { left: -150%; } 50%, 100% { left: 100%; } }
+    .app.started {
+      opacity: 1;
+      transform: none;
+    }
 
-        .progress-marker { position: absolute; right: -2px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: var(--red-alert); border: 2px solid #fff; border-radius: 50%; cursor: pointer; z-index: 5; box-shadow: 0 0 12px var(--red-alert); }
-        .date-tooltip { position: absolute; bottom: 28px; right: -10px; background: linear-gradient(135deg, var(--gold-bright), var(--gold)); color: var(--navy-black); padding: 5px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: 900; opacity: 0; visibility: hidden; transition: 0.3s; pointer-events: none; }
-        .date-tooltip.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .crest-wrap {
+      position: relative;
+      display: grid;
+      place-items: center;
+      margin-bottom: .7rem;
+    }
 
-        /* BOTÕES */
-        .btn-group { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 300px; margin-bottom: 2.5rem; }
-        .action-btn { background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); color: var(--gold); padding: 12px 20px; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; }
-        #install-btn { display: none; }
+    .crest-wrap::before {
+      content: "";
+      position: absolute;
+      width: 130%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,.13), transparent 66%);
+      filter: blur(9px);
+    }
 
-        .footer-brand { font-size: 0.5rem; letter-spacing: 4px; color: var(--text-gray); opacity: 0.15; text-transform: uppercase; margin-top: 1.5rem; pointer-events: none; }
+    .crest {
+      position: relative;
+      width: clamp(112px, 25vw, 160px);
+      height: auto;
+      filter: drop-shadow(0 12px 28px rgba(0,0,0,.36));
+    }
 
-        @media (min-width: 768px) {
-            .app-container { max-width: 850px; }
-            .countdown-grid { grid-template-columns: repeat(4, 1fr); }
-            .number { font-size: 4.5rem; }
-            .brasao { width: 220px; }
-            .btn-group { flex-direction: row; max-width: 100%; justify-content: center; }
-        }
-    </style>
+    .eyebrow {
+      margin-top: .25rem;
+      color: var(--muted);
+      font-family: "Cinzel", serif;
+      font-size: clamp(.62rem, 2vw, .72rem);
+      font-weight: 600;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      width: 52px;
+      height: 1px;
+      margin: .85rem 0 1.05rem;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      box-shadow: 0 0 12px rgba(212,175,55,.32);
+    }
+
+    .faltam {
+      color: var(--gold-light);
+      font-family: "Cinzel", serif;
+      font-size: clamp(.82rem, 2.7vw, 1rem);
+      font-weight: 700;
+      letter-spacing: .48em;
+      text-transform: uppercase;
+      padding-left: .48em;
+    }
+
+    .days-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: -.05rem;
+    }
+
+    .days-number {
+      font-size: clamp(7.3rem, 31vw, 13rem);
+      line-height: .92;
+      letter-spacing: -.07em;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 10px 45px rgba(0,0,0,.52);
+    }
+
+    .days-label {
+      margin-top: .18rem;
+      color: var(--gold);
+      font-size: clamp(.75rem, 2.6vw, .9rem);
+      font-weight: 800;
+      letter-spacing: .48em;
+      padding-left: .48em;
+      text-transform: uppercase;
+    }
+
+    .secondary-time {
+      width: min(100%, 500px);
+      margin: 1.55rem 0 1.45rem;
+      padding: .95rem .75rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.018), transparent);
+    }
+
+    .time-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .25rem;
+    }
+
+    .time-item + .time-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 15%;
+      width: 1px;
+      height: 70%;
+      background: rgba(212,175,55,.16);
+    }
+
+    .time-value {
+      font-size: clamp(1.25rem, 5vw, 1.7rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .time-unit {
+      color: var(--muted);
+      font-size: .57rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .event-title {
+      max-width: 610px;
+      color: #d7dee8;
+      font-family: "Cinzel", serif;
+      font-size: clamp(.82rem, 2.6vw, 1rem);
+      font-weight: 600;
+      line-height: 1.6;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .event-date {
+      margin-top: .45rem;
+      color: var(--gold-light);
+      font-size: clamp(.95rem, 3.5vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: .27em;
+      padding-left: .27em;
+      text-align: center;
+    }
+
+    .progress-block {
+      width: min(100%, 500px);
+      margin-top: 1.65rem;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: .55rem;
+      color: var(--muted);
+      font-size: .56rem;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .progress-meta strong {
+      color: var(--gold);
+      font-size: .62rem;
+    }
+
+    .track {
+      height: 5px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 99px;
+      background: rgba(255,255,255,.045);
+    }
+
+    .bar {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #6f5c1f, var(--gold-light));
+      box-shadow: 0 0 16px rgba(212,175,55,.28);
+      transition: width 1s ease;
+    }
+
+    .actions {
+      width: min(100%, 500px);
+      margin-top: 1.55rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+    }
+
+    .action-btn {
+      min-height: 48px;
+      padding: .78rem .9rem;
+      border-radius: 9px;
+      border: 1px solid rgba(212,175,55,.42);
+      background: rgba(212,175,55,.07);
+      color: var(--gold-light);
+      cursor: pointer;
+      font-size: .67rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(212,175,55,.12);
+      border-color: rgba(212,175,55,.7);
+    }
+
+    .action-btn:active { transform: translateY(0); }
+    .action-btn:disabled { opacity: .55; cursor: default; }
+
+    #install-btn { display: none; }
+
+    .install-visible .actions {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    footer {
+      margin-top: 1.55rem;
+      color: rgba(203,213,225,.27);
+      font-size: .48rem;
+      font-weight: 600;
+      letter-spacing: .24em;
+      line-height: 1.6;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .today-mode .faltam,
+    .today-mode .days-hero,
+    .today-mode .secondary-time,
+    .today-mode .progress-block {
+      display: none;
+    }
+
+    .arrival {
+      display: none;
+      margin: 1.1rem 0 .85rem;
+      text-align: center;
+    }
+
+    .today-mode .arrival { display: block; }
+
+    .arrival h1 {
+      font-family: "Cinzel", serif;
+      color: var(--gold-light);
+      font-size: clamp(2.35rem, 10vw, 4.7rem);
+      letter-spacing: .05em;
+      line-height: 1.05;
+      text-shadow: 0 0 30px rgba(212,175,55,.24);
+    }
+
+    .arrival p {
+      margin-top: .75rem;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 520px) {
+      .app {
+        justify-content: flex-start;
+        padding-top: max(1rem, env(safe-area-inset-top));
+      }
+
+      .crest { width: 108px; }
+      .divider { margin: .65rem 0 .82rem; }
+      .secondary-time { margin: 1.25rem 0 1.2rem; }
+      .progress-block { margin-top: 1.35rem; }
+      .actions { margin-top: 1.3rem; }
+      footer { margin-top: 1.25rem; }
+    }
+
+    @media (max-width: 430px) {
+      .install-visible .actions,
+      .actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="splash" id="splash-screen" aria-hidden="true">
+    <div class="splash-inner">
+      <img src="brasao.png" alt="" id="splash-brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'" />
+      <p>A Turma do Impossível</p>
+    </div>
+  </div>
 
-    <div id="splash-screen">
-        <img src="brasao.png" alt="PCRR" class="splash-brasao" id="brasao-img" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
-        <h2 class="splash-text">A Turma do Impossível</h2>
+  <main class="app" id="app">
+    <div class="crest-wrap">
+      <img class="crest" src="brasao.png" alt="Brasão da Polícia Civil de Roraima" id="brasao-principal" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'" />
     </div>
 
-    <div class="app-container" id="main-content">
-        <header class="brasao-wrapper">
-            <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
-        </header>
+    <div class="eyebrow">A Turma do Impossível</div>
+    <div class="divider"></div>
 
-        <span class="faltam-label">Faltam</span>
+    <div class="faltam">Faltam</div>
 
-        <main class="countdown-grid">
-            <div class="card"><span class="number" id="days">00</span><span class="unit">Dias</span></div>
-            <div class="card"><span class="number" id="hours">00</span><span class="unit">Horas</span></div>
-            <div class="card"><span class="number" id="minutes">00</span><span class="unit">Minutos</span></div>
-            <div class="card"><span class="number" id="seconds">00</span><span class="unit">Segundos</span></div>
-        </main>
+    <section class="days-hero" aria-label="Dias restantes">
+      <div class="days-number" id="days">00</div>
+      <div class="days-label">Dias</div>
+    </section>
 
-        <h2 class="target-phrase">Para o início da aula inaugural</h2>
+    <section class="secondary-time" aria-label="Tempo restante">
+      <div class="time-item">
+        <span class="time-value" id="hours">00</span>
+        <span class="time-unit">Horas</span>
+      </div>
+      <div class="time-item">
+        <span class="time-value" id="minutes">00</span>
+        <span class="time-unit">Minutos</span>
+      </div>
+      <div class="time-item">
+        <span class="time-value" id="seconds">00</span>
+        <span class="time-unit">Segundos</span>
+      </div>
+    </section>
 
-        <div class="progress-container">
-            <div class="progress-label"><span>Progresso</span><span id="pct">0.00%</span></div>
-            <div class="track">
-                <div class="bar" id="bar"></div>
-                <div class="progress-marker" id="marker"></div>
-                <div class="date-tooltip" id="tooltip">04/09/26</div>
-            </div>
-        </div>
+    <section class="arrival" id="arrival" aria-live="polite">
+      <h1>Chegou o dia.</h1>
+      <p>CFP PCRR 2026</p>
+    </section>
 
-        <div class="btn-group">
-            <button id="install-btn" class="action-btn">Adicionar à tela inicial</button>
-            <button id="share-btn" class="action-btn">Compartilhar no status</button>
-        </div>
+    <h1 class="event-title">Para o início da aula inaugural</h1>
+    <div class="event-date">04 · 09 · 2026</div>
 
-        <footer class="footer-brand">Comissão Oficial do Cadastro Reserva da PCRR</footer>
+    <section class="progress-block" aria-label="Progresso dos últimos 30 dias">
+      <div class="progress-meta">
+        <span>Reta final · últimos 30 dias</span>
+        <strong id="pct">0%</strong>
+      </div>
+      <div class="track"><div class="bar" id="bar"></div></div>
+    </section>
+
+    <div class="actions">
+      <button class="action-btn" id="calendar-btn" type="button">Adicionar ao calendário</button>
+      <button class="action-btn" id="share-btn" type="button">Compartilhar</button>
+      <button class="action-btn" id="install-btn" type="button">Instalar</button>
     </div>
 
-    <canvas id="share-canvas" style="display:none;" width="1080" height="1920"></canvas>
+    <footer>Comissão Oficial do Cadastro Reserva da PCRR</footer>
+  </main>
 
-    <script>
-        const target = new Date('2026-09-04T00:00:00').getTime();
-        const start = new Date('2024-01-01T00:00:00').getTime();
-        let currentDays = 0;
+  <canvas id="share-canvas" width="1080" height="1920" hidden></canvas>
 
-        const marker = document.getElementById('marker');
-        const tooltip = document.getElementById('tooltip');
-        marker.addEventListener('click', (e) => {
-            e.stopPropagation();
-            tooltip.classList.toggle('show');
-            if(tooltip.classList.contains('show')) setTimeout(() => tooltip.classList.remove('show'), 3500);
-        });
-        document.addEventListener('click', () => tooltip.classList.remove('show'));
+  <script>
+    // 04/09/2026 às 00:00 no fuso de Roraima (UTC-4).
+    // Se a aula inaugural tiver horário oficial, altere apenas esta linha.
+    const target = new Date('2026-09-04T00:00:00-04:00');
+    const finalSprintStart = new Date(target.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-        function startApp() {
-            const splash = document.getElementById('splash-screen');
-            const main = document.getElementById('main-content');
-            splash.style.opacity = '0';
-            setTimeout(() => { splash.style.display = 'none'; main.classList.add('started'); }, 600);
+    const app = document.getElementById('app');
+    const splash = document.getElementById('splash-screen');
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const pctEl = document.getElementById('pct');
+    const barEl = document.getElementById('bar');
+    const shareBtn = document.getElementById('share-btn');
+    const calendarBtn = document.getElementById('calendar-btn');
+    const installBtn = document.getElementById('install-btn');
+    const canvas = document.getElementById('share-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let currentDays = 0;
+    let deferredPrompt;
+
+    function openApp() {
+      splash.classList.add('is-hidden');
+      app.classList.add('started');
+      setTimeout(() => splash.remove(), 500);
+    }
+
+    // A animação completa aparece só uma vez por aba/sessão.
+    const alreadyOpened = sessionStorage.getItem('cfp-opened');
+    if (alreadyOpened) {
+      openApp();
+    } else {
+      sessionStorage.setItem('cfp-opened', '1');
+      window.addEventListener('DOMContentLoaded', () => setTimeout(openApp, 950));
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = target.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        currentDays = 0;
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        secondsEl.textContent = '00';
+        pctEl.textContent = '100%';
+        barEl.style.width = '100%';
+        app.classList.add('today-mode');
+        return;
+      }
+
+      app.classList.remove('today-mode');
+
+      const day = 24 * 60 * 60 * 1000;
+      const hour = 60 * 60 * 1000;
+      const minute = 60 * 1000;
+
+      currentDays = Math.floor(diff / day);
+      const hours = Math.floor((diff % day) / hour);
+      const minutes = Math.floor((diff % hour) / minute);
+      const seconds = Math.floor((diff % minute) / 1000);
+
+      daysEl.textContent = String(currentDays).padStart(2, '0');
+      hoursEl.textContent = String(hours).padStart(2, '0');
+      minutesEl.textContent = String(minutes).padStart(2, '0');
+      secondsEl.textContent = String(seconds).padStart(2, '0');
+
+      const sprintDuration = target.getTime() - finalSprintStart.getTime();
+      const elapsed = now.getTime() - finalSprintStart.getTime();
+      const pct = Math.min(Math.max((elapsed / sprintDuration) * 100, 0), 100);
+      pctEl.textContent = pct.toFixed(1).replace('.', ',') + '%';
+      barEl.style.width = pct + '%';
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    calendarBtn.addEventListener('click', () => {
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//CFP PCRR 2026//PT-BR',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        'UID:cfp-pcrr-2026@countdown',
+        'DTSTAMP:20260820T173600Z',
+        'DTSTART;VALUE=DATE:20260904',
+        'DTEND;VALUE=DATE:20260905',
+        'SUMMARY:Aula inaugural — CFP PCRR 2026',
+        'DESCRIPTION:A Turma do Impossível — início da aula inaugural do CFP PCRR 2026.',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'CFP-PCRR-2026.ics';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    async function generateShareCard() {
+      shareBtn.disabled = true;
+      const originalText = shareBtn.textContent;
+      shareBtn.textContent = 'Gerando...';
+
+      try {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const bg = ctx.createLinearGradient(0, 0, 0, 1920);
+        bg.addColorStop(0, '#09111d');
+        bg.addColorStop(.48, '#05070a');
+        bg.addColorStop(1, '#020304');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, 1080, 1920);
+
+        const glow = ctx.createRadialGradient(540, 520, 0, 540, 520, 560);
+        glow.addColorStop(0, 'rgba(212,175,55,.13)');
+        glow.addColorStop(1, 'rgba(212,175,55,0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, 1080, 1150);
+
+        let img;
+        try {
+          img = await loadImage(document.getElementById('brasao-principal').src);
+          const logoW = 340;
+          const logoH = (img.height / img.width) * logoW;
+          ctx.drawImage(img, (1080 - logoW) / 2, 190, logoW, logoH);
+        } catch (_) {}
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+
+        ctx.fillStyle = '#9aa7b8';
+        ctx.font = '600 28px Montserrat, sans-serif';
+        ctx.letterSpacing = '8px';
+        ctx.fillText('A TURMA DO IMPOSSÍVEL', 540, 680);
+
+        ctx.fillStyle = '#f1d788';
+        ctx.font = '700 44px Cinzel, serif';
+        ctx.fillText('FALTAM', 540, 850);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 330px Montserrat, sans-serif';
+        ctx.fillText(String(currentDays), 540, 1210);
+
+        ctx.fillStyle = '#d4af37';
+        ctx.font = '800 64px Montserrat, sans-serif';
+        ctx.fillText('DIAS', 540, 1325);
+
+        ctx.strokeStyle = 'rgba(212,175,55,.35)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(290, 1420);
+        ctx.lineTo(790, 1420);
+        ctx.stroke();
+
+        ctx.fillStyle = '#d7dee8';
+        ctx.font = '600 38px Cinzel, serif';
+        ctx.fillText('PARA O INÍCIO DA AULA INAUGURAL', 540, 1530);
+
+        ctx.fillStyle = '#f1d788';
+        ctx.font = '800 46px Montserrat, sans-serif';
+        ctx.fillText('04 · 09 · 2026', 540, 1620);
+
+        ctx.fillStyle = 'rgba(203,213,225,.34)';
+        ctx.font = '600 23px Montserrat, sans-serif';
+        ctx.fillText('COMISSÃO OFICIAL DO CADASTRO RESERVA DA PCRR', 540, 1825);
+
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 1));
+        const file = new File([blob], 'cfp-pcrr-2026.png', { type: 'image/png' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'CFP PCRR 2026',
+            text: `Faltam ${currentDays} dias para a aula inaugural do CFP PCRR 2026.`
+          });
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = file.name;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
         }
-        document.addEventListener('DOMContentLoaded', () => setTimeout(startApp, 1800));
+      } catch (err) {
+        console.error(err);
+        alert('Não foi possível gerar o card de compartilhamento.');
+      } finally {
+        shareBtn.disabled = false;
+        shareBtn.textContent = originalText;
+      }
+    }
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const diff = target - now;
-            if (diff <= 0) return;
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            currentDays = d;
-            document.getElementById('days').innerText = d.toString().padStart(2, '0');
-            document.getElementById('hours').innerText = Math.floor((diff % (86400000)) / 3600000).toString().padStart(2, '0');
-            document.getElementById('minutes').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-            document.getElementById('seconds').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-            const pct = Math.min(Math.max(((now - start) / (target - start)) * 100, 0), 100);
-            document.getElementById('bar').style.width = pct + '%';
-            document.getElementById('pct').innerText = pct.toFixed(2) + '%';
-        }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+    shareBtn.addEventListener('click', generateShareCard);
 
-        // LÓGICA DE COMPARTILHAMENTO
-        const shareBtn = document.getElementById('share-btn');
-        const canvas = document.getElementById('share-canvas');
-        const ctx = canvas.getContext('2d');
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      deferredPrompt = event;
+      installBtn.style.display = 'block';
+      app.classList.add('install-visible');
+    });
 
-        shareBtn.addEventListener('click', async () => {
-            shareBtn.innerText = "Gerando";
-            shareBtn.disabled = true;
-
-            try {
-                // Background
-                ctx.fillStyle = "#05070a";
-                ctx.fillRect(0, 0, 1080, 1920);
-                const grad = ctx.createRadialGradient(540, 960, 0, 540, 960, 1000);
-                grad.addColorStop(0, "#0a1120");
-                grad.addColorStop(1, "#05070a");
-                ctx.fillStyle = grad;
-                ctx.fillRect(0, 0, 1080, 1920);
-
-                const img = new Image();
-                img.crossOrigin = "anonymous"; 
-                img.src = document.getElementById('brasao-img').src;
-                await new Promise(res => img.onload = res);
-                
-                // Cálculo de proporção para não distorcer
-                const logoW = 480;
-                const logoH = (img.height / img.width) * logoW;
-                ctx.drawImage(img, (1080 - logoW)/2, 350, logoW, logoH);
-
-                ctx.textAlign = "center";
-                ctx.fillStyle = "#D4AF37"; ctx.font = "bold 55px Montserrat"; ctx.fillText("FALTAM", 540, 950);
-                ctx.fillStyle = "#ffffff"; ctx.font = "900 320px Montserrat"; ctx.fillText(currentDays, 540, 1250);
-                ctx.fillStyle = "#D4AF37"; ctx.font = "bold 70px Montserrat"; ctx.fillText("DIAS", 540, 1370);
-                ctx.fillStyle = "#cbd5e1"; ctx.font = "45px Cinzel"; ctx.fillText("PARA O INÍCIO DA AULA INAUGURAL", 540, 1550);
-                ctx.globalAlpha = 0.2; ctx.font = "28px Montserrat"; ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
-
-                canvas.toBlob(async (blob) => {
-                    const file = new File([blob], 'cfp-status.png', { type: 'image/png' });
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            files: [file],
-                            title: 'CFP PCRR 2026',
-                            text: `Faltam apenas ${currentDays} dias para a nossa aula inaugural!`
-                        });
-                    } else { alert("Navegador sem suporte a compartilhamento de imagem."); }
-                    shareBtn.innerText = "Compartilhar no status"; shareBtn.disabled = false;
-                });
-            } catch (err) { alert("Erro ao gerar card."); shareBtn.innerText = "Compartilhar no status"; shareBtn.disabled = false; }
-        });
-
-        // PWA
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-btn').style.display = 'block'; });
-        document.getElementById('install-btn').addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } });
-    </script>
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.style.display = 'none';
+      app.classList.remove('install-visible');
+    });
+  </script>
 </body>
 </html>
