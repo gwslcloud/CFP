@@ -354,7 +354,7 @@
     #install-btn { display: none; }
 
     .install-visible .actions {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
 
     footer {
@@ -574,34 +574,6 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    calendarBtn.addEventListener('click', () => {
-      const ics = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//CFP PCRR 2026//PT-BR',
-        'CALSCALE:GREGORIAN',
-        'BEGIN:VEVENT',
-        'UID:cfp-pcrr-2026@countdown',
-        'DTSTAMP:20260820T173600Z',
-        'DTSTART;VALUE=DATE:20260904',
-        'DTEND;VALUE=DATE:20260905',
-        'SUMMARY:Aula inaugural — CFP PCRR 2026',
-        'DESCRIPTION:A Turma do Impossível — início da aula inaugural do CFP PCRR 2026.',
-        'END:VEVENT',
-        'END:VCALENDAR'
-      ].join('\r\n');
-
-      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'CFP-PCRR-2026.ics';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    });
-
     function loadImage(src) {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -687,7 +659,7 @@
           await navigator.share({
             files: [file],
             title: 'CFP PCRR 2026',
-            text: `Faltam ${currentDays} dias para a nossa aula inaugural.`
+            text: `Faltam ${currentDays} dias para a aula inaugural do CFP PCRR 2026.`
           });
         } else {
           const url = URL.createObjectURL(blob);
