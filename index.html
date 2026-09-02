@@ -195,7 +195,7 @@
             <img src="brasao.png" alt="Brasão PCRR" class="brasao" onerror="this.src='https://i.imgur.com/8Qp2D6C.png'">
         </header>
 
-        <span class="faltam-label">Faltam</span>
+        <span class="faltam-label" id="label-topo">Faltam</span>
 
         <main class="countdown-grid">
             <div class="card"><span class="number" id="days">00</span><span class="unit">Dias</span></div>
@@ -204,14 +204,14 @@
             <div class="card"><span class="number" id="seconds">00</span><span class="unit">Segundos</span></div>
         </main>
 
-        <h2 class="target-phrase">Para o início da aula inaugural</h2>
+        <h2 class="target-phrase" id="frase-alvo">Para o início da aula inaugural</h2>
 
         <div class="progress-container">
             <div class="progress-label"><span>Progresso</span><span id="pct">0.00%</span></div>
             <div class="track">
                 <div class="bar" id="bar"></div>
                 <div class="progress-marker" id="marker"></div>
-                <div class="date-tooltip" id="tooltip">04/09/26</div>
+                <div class="date-tooltip" id="tooltip">04/09/26 às 19h</div>
             </div>
         </div>
 
@@ -226,9 +226,13 @@
     <canvas id="share-canvas" style="display:none;" width="1080" height="1920"></canvas>
 
     <script>
-        const target = new Date('2026-09-04T00:00:00').getTime();
+        // DATA AJUSTADA PARA 19:00
+        const target = new Date('2026-09-04T19:00:00').getTime();
         const start = new Date('2024-01-01T00:00:00').getTime();
-        let currentDays = 0;
+        
+        // Variáveis globais para o compartilhamento
+        let dGlobal = 0;
+        let hGlobal = 0;
 
         const marker = document.getElementById('marker');
         const tooltip = document.getElementById('tooltip');
@@ -250,21 +254,41 @@
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = target - now;
-            if (diff <= 0) return;
+            
+            if (diff <= 0) {
+                document.getElementById('days').innerText = "00";
+                document.getElementById('hours').innerText = "00";
+                document.getElementById('minutes').innerText = "00";
+                document.getElementById('seconds').innerText = "00";
+                document.getElementById('label-topo').innerText = "CHEGOU A HORA";
+                document.getElementById('frase-alvo').innerText = "A Turma do Impossível iniciou sua jornada!";
+                return;
+            }
+
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            currentDays = d;
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            dGlobal = d;
+            hGlobal = h;
+
             document.getElementById('days').innerText = d.toString().padStart(2, '0');
-            document.getElementById('hours').innerText = Math.floor((diff % (86400000)) / 3600000).toString().padStart(2, '0');
-            document.getElementById('minutes').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-            document.getElementById('seconds').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-            const pct = Math.min(Math.max(((now - start) / (target - start)) * 100, 0), 100);
+            document.getElementById('hours').innerText = h.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = m.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = s.toString().padStart(2, '0');
+            
+            const total = target - start;
+            const decorrido = now - start;
+            const pct = Math.min(Math.max((decorrido / total) * 100, 0), 100);
+            
             document.getElementById('bar').style.width = pct + '%';
             document.getElementById('pct').innerText = pct.toFixed(2) + '%';
         }
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // LÓGICA DE COMPARTILHAMENTO
+        // LÓGICA DE COMPARTILHAMENTO ATUALIZADA
         const shareBtn = document.getElementById('share-btn');
         const canvas = document.getElementById('share-canvas');
         const ctx = canvas.getContext('2d');
@@ -288,15 +312,27 @@
                 img.src = document.getElementById('brasao-img').src;
                 await new Promise(res => img.onload = res);
                 
-                // Cálculo de proporção para não distorcer
                 const logoW = 480;
                 const logoH = (img.height / img.width) * logoW;
                 ctx.drawImage(img, (1080 - logoW)/2, 350, logoW, logoH);
 
                 ctx.textAlign = "center";
                 ctx.fillStyle = "#D4AF37"; ctx.font = "bold 55px Montserrat"; ctx.fillText("FALTAM", 540, 950);
-                ctx.fillStyle = "#ffffff"; ctx.font = "900 320px Montserrat"; ctx.fillText(currentDays, 540, 1250);
-                ctx.fillStyle = "#D4AF37"; ctx.font = "bold 70px Montserrat"; ctx.fillText("DIAS", 540, 1370);
+                
+                // LÓGICA DE TEXTO DINÂMICO NO CARD
+                let displayValue = dGlobal;
+                let displayUnit = "DIAS";
+                let shareText = `Faltam apenas ${dGlobal} dias para a nossa aula inaugural!`;
+
+                if (dGlobal <= 0) {
+                    displayValue = hGlobal;
+                    displayUnit = "HORAS";
+                    shareText = `Faltam apenas ${hGlobal}h para a nossa aula inaugural!`;
+                }
+
+                ctx.fillStyle = "#ffffff"; ctx.font = "900 320px Montserrat"; ctx.fillText(displayValue, 540, 1250);
+                ctx.fillStyle = "#D4AF37"; ctx.font = "bold 70px Montserrat"; ctx.fillText(displayUnit, 540, 1370);
+                
                 ctx.fillStyle = "#cbd5e1"; ctx.font = "45px Cinzel"; ctx.fillText("PARA O INÍCIO DA AULA INAUGURAL", 540, 1550);
                 ctx.globalAlpha = 0.2; ctx.font = "28px Montserrat"; ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
 
@@ -306,7 +342,7 @@
                         await navigator.share({
                             files: [file],
                             title: 'CFP PCRR 2026',
-                            text: `Faltam apenas ${currentDays} dias para a nossa aula inaugural!`
+                            text: shareText
                         });
                     } else { alert("Navegador sem suporte a compartilhamento de imagem."); }
                     shareBtn.innerText = "Compartilhar no status"; shareBtn.disabled = false;
