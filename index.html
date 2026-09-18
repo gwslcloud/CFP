@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CFP PCRR 2026</title>
+    <title>CFP PCRR - Fim do Curso</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#05070a">
@@ -18,6 +18,8 @@
             --gold: #D4AF37;
             --gold-bright: #F3DFA2;
             --gold-muted: rgba(212, 175, 55, 0.4);
+            --green-done: #10B981;
+            --green-glow: rgba(16, 185, 129, 0.45);
             --red-alert: #cc0000;
             --navy-black: #05070a;
             --tactical-blue: #0a1120;
@@ -38,6 +40,7 @@
             overflow-x: hidden;
             position: relative;
             text-align: center;
+            padding: 1.5rem 0;
         }
 
         /* --- SPLASH SCREEN --- */
@@ -102,7 +105,7 @@
         /* --- CONTEÚDO --- */
         .app-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 620px;
             padding: 2rem 1.5rem;
             display: flex;
             flex-direction: column;
@@ -114,7 +117,7 @@
         }
         .app-container.started { opacity: 1; }
 
-        .brasao-wrapper, .faltam-label, .card, .target-phrase, .progress-container, footer, .btn-group {
+        .brasao-wrapper, .faltam-label, .card, .target-phrase, .mural-section, .progress-container, footer, .btn-group {
             opacity: 0;
             transform: translateY(15px);
         }
@@ -123,6 +126,7 @@
         .app-container.started .faltam-label,
         .app-container.started .card,
         .app-container.started .target-phrase,
+        .app-container.started .mural-section,
         .app-container.started .progress-container,
         .app-container.started footer,
         .app-container.started .btn-group {
@@ -138,9 +142,10 @@
         .app-container.started .card:nth-child(2) { animation-delay: 0.4s; }
         .app-container.started .card:nth-child(3) { animation-delay: 0.5s; }
         .app-container.started .card:nth-child(4) { animation-delay: 0.6s; }
-        .app-container.started .target-phrase { animation-delay: 0.8s; }
+        .app-container.started .target-phrase { animation-delay: 0.7s; }
+        .app-container.started .mural-section { animation-delay: 0.85s; }
         .app-container.started .progress-container { animation-delay: 1.0s; }
-        .app-container.started .btn-group { animation-delay: 1.2s; }
+        .app-container.started .btn-group { animation-delay: 1.15s; }
 
         .brasao { width: 160px; height: auto; animation: breathe-glow 4s infinite ease-in-out; }
         @keyframes breathe-glow {
@@ -149,17 +154,132 @@
         }
 
         .faltam-label { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 8px; color: var(--gold); margin-bottom: 1.5rem; font-weight: 700; }
-        .countdown-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2.5rem; width: 100%; }
+        .countdown-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem; width: 100%; }
         .card { background: var(--glass); backdrop-filter: blur(12px); border: 1px solid var(--gold-muted); border-radius: 12px; padding: 1.5rem 0.5rem; }
         .number { display: block; font-size: 2.8rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
         .unit { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700; }
-        .target-phrase { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 3px; color: var(--text-gray); margin-bottom: 3rem; text-transform: uppercase; }
+        .target-phrase { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 3px; color: var(--text-gray); margin-bottom: 2rem; text-transform: uppercase; }
+
+        /* --- MURAL DE QUADRADOS --- */
+        .mural-section {
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--gold-muted);
+            border-radius: 12px;
+            padding: 1.25rem 1rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .mural-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .mural-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .mural-stats {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .mural-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(14px, 1fr));
+            gap: 5px;
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mural-grid::-webkit-scrollbar { width: 4px; }
+        .mural-grid::-webkit-scrollbar-thumb { background: var(--gold-muted); border-radius: 4px; }
+
+        .day-box {
+            aspect-ratio: 1 / 1;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .day-box:hover {
+            transform: scale(1.35);
+            z-index: 10;
+        }
+
+        /* Dias já concluídos (VERDE) */
+        .day-box.completed {
+            background: var(--green-done);
+            border-color: #34d399;
+            box-shadow: 0 0 6px var(--green-glow);
+        }
+
+        /* Dia atual */
+        .day-box.today {
+            background: #059669;
+            border: 2px solid #fbbf24;
+            animation: pulse-today 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse-today {
+            0%, 100% { box-shadow: 0 0 6px #fbbf24; }
+            50% { box-shadow: 0 0 14px #fbbf24; transform: scale(1.15); }
+        }
+
+        /* Dias futuros */
+        .day-box.future {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .mural-info-text {
+            margin-top: 0.6rem;
+            font-size: 0.72rem;
+            color: var(--gold-bright);
+            font-weight: 500;
+            min-height: 1.1rem;
+            text-align: center;
+        }
+
+        .mural-legend {
+            display: flex;
+            gap: 15px;
+            margin-top: 0.75rem;
+            font-size: 0.65rem;
+            color: var(--text-gray);
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+        .legend-dot.completed { background: var(--green-done); box-shadow: 0 0 4px var(--green-glow); }
+        .legend-dot.today { background: #059669; border: 1px solid #fbbf24; }
+        .legend-dot.future { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
 
         /* PROGRESSO */
         .progress-container { width: 100%; margin-bottom: 2.5rem; }
         .progress-label { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; color: var(--gold); letter-spacing: 1px; }
         .track { height: 8px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .bar { height: 100%; width: 0%; background: linear-gradient(90deg, #1e293b, var(--gold)); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); transition: width 1.5s ease; border-radius: 10px; position: relative; overflow: hidden; }
+        .bar { height: 100%; width: 0%; background: linear-gradient(90deg, #1e293b, var(--green-done), var(--gold)); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); transition: width 1.5s ease; border-radius: 10px; position: relative; overflow: hidden; }
         .bar::after { content: ""; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); animation: progress-shimmer 3s infinite linear; }
         @keyframes progress-shimmer { 0% { left: -150%; } 50%, 100% { left: 100%; } }
 
@@ -180,6 +300,7 @@
             .number { font-size: 4.5rem; }
             .brasao { width: 220px; }
             .btn-group { flex-direction: row; max-width: 100%; justify-content: center; }
+            .mural-grid { grid-template-columns: repeat(auto-fill, minmax(18px, 1fr)); }
         }
     </style>
 </head>
@@ -204,14 +325,33 @@
             <div class="card"><span class="number" id="seconds">00</span><span class="unit">Segundos</span></div>
         </main>
 
-        <h2 class="target-phrase" id="frase-alvo">Para o início da aula inaugural</h2>
+        <h2 class="target-phrase" id="frase-alvo">Para o fim do curso</h2>
 
+        <!-- MURAL DE DIAS -->
+        <section class="mural-section">
+            <div class="mural-header">
+                <span class="mural-title">Mural da Missão</span>
+                <span class="mural-stats" id="mural-stats">0 de 190 dias</span>
+            </div>
+            
+            <div class="mural-grid" id="mural-grid"></div>
+            
+            <div class="mural-info-text" id="mural-info">Toque ou passe o mouse nos quadrados para ver o dia</div>
+
+            <div class="mural-legend">
+                <div class="legend-item"><span class="legend-dot completed"></span> Concluído</div>
+                <div class="legend-item"><span class="legend-dot today"></span> Hoje</div>
+                <div class="legend-item"><span class="legend-dot future"></span> Restante</div>
+            </div>
+        </section>
+
+        <!-- BARRA DE PROGRESSO -->
         <div class="progress-container">
-            <div class="progress-label"><span>Progresso</span><span id="pct">0.00%</span></div>
+            <div class="progress-label"><span>Progresso do Curso</span><span id="pct">0.00%</span></div>
             <div class="track">
                 <div class="bar" id="bar"></div>
                 <div class="progress-marker" id="marker"></div>
-                <div class="date-tooltip" id="tooltip">04/09/26 às 19h</div>
+                <div class="date-tooltip" id="tooltip">12/03/27 às 19h</div>
             </div>
         </div>
 
@@ -226,14 +366,79 @@
     <canvas id="share-canvas" style="display:none;" width="1080" height="1920"></canvas>
 
     <script>
-        // DATA AJUSTADA PARA 19:00
-        const target = new Date('2026-09-04T19:00:00').getTime();
-        const start = new Date('2024-01-01T00:00:00').getTime();
+        // PERÍODO OFICIAL DO CURSO
+        // Início: 04/09/2026 | Término: 12/03/2027 às 19:00
+        const start = new Date('2026-09-04T00:00:00').getTime();
+        const target = new Date('2027-03-12T19:00:00').getTime();
         
-        // Variáveis globais para o compartilhamento
         let dGlobal = 0;
         let hGlobal = 0;
 
+        // GERAR O MURAL DE DIAS (190 DIAS)
+        function buildMural() {
+            const grid = document.getElementById('mural-grid');
+            const stats = document.getElementById('mural-stats');
+            const info = document.getElementById('mural-info');
+            
+            grid.innerHTML = '';
+            
+            const startDate = new Date(2026, 8, 4);  // 04/09/2026 (mês 8 = Setembro)
+            const endDate = new Date(2027, 2, 12);   // 12/03/2027 (mês 2 = Março)
+            
+            const now = new Date();
+            const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            
+            let current = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+            const days = [];
+            
+            while (current <= endDate) {
+                days.push(new Date(current));
+                current.setDate(current.getDate() + 1);
+            }
+            
+            let completedDays = 0;
+
+            days.forEach((day, index) => {
+                const box = document.createElement('div');
+                box.classList.add('day-box');
+                
+                const dayTime = day.getTime();
+                const dayNum = index + 1;
+                const formattedDate = day.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                
+                let status = "Pendente";
+
+                if (dayTime < todayMidnight) {
+                    box.classList.add('completed');
+                    status = "Concluído";
+                    completedDays++;
+                } else if (dayTime === todayMidnight) {
+                    box.classList.add('today');
+                    status = "Em andamento (Hoje)";
+                } else {
+                    box.classList.add('future');
+                    status = "Pendente";
+                }
+
+                box.title = `Dia ${dayNum} de ${days.length} • ${formattedDate} (${status})`;
+
+                const showDetails = () => {
+                    info.innerText = `Dia ${dayNum}/${days.length} • ${formattedDate} — ${status}`;
+                };
+
+                box.addEventListener('mouseenter', showDetails);
+                box.addEventListener('click', showDetails);
+
+                grid.appendChild(box);
+            });
+
+            const percentCompleted = ((completedDays / days.length) * 100).toFixed(1);
+            stats.innerText = `${completedDays} de ${days.length} dias (${percentCompleted}%)`;
+        }
+
+        buildMural();
+
+        // TOOLTIP DO MARCADOR
         const marker = document.getElementById('marker');
         const tooltip = document.getElementById('tooltip');
         marker.addEventListener('click', (e) => {
@@ -243,6 +448,7 @@
         });
         document.addEventListener('click', () => tooltip.classList.remove('show'));
 
+        // TRANSIÇÃO DA SPLASH SCREEN
         function startApp() {
             const splash = document.getElementById('splash-screen');
             const main = document.getElementById('main-content');
@@ -251,6 +457,7 @@
         }
         document.addEventListener('DOMContentLoaded', () => setTimeout(startApp, 1800));
 
+        // ATUALIZAÇÃO DA CONTAGEM REGRESSIVA
         function updateCountdown() {
             const now = new Date().getTime();
             const diff = target - now;
@@ -260,8 +467,10 @@
                 document.getElementById('hours').innerText = "00";
                 document.getElementById('minutes').innerText = "00";
                 document.getElementById('seconds').innerText = "00";
-                document.getElementById('label-topo').innerText = "CHEGOU A HORA";
-                document.getElementById('frase-alvo').innerText = "A Turma do Impossível iniciou sua jornada!";
+                document.getElementById('label-topo').innerText = "CURSO CONCLUÍDO";
+                document.getElementById('frase-alvo').innerText = "Parabéns! O CFP PCRR foi finalizado!";
+                document.getElementById('bar').style.width = '100%';
+                document.getElementById('pct').innerText = '100%';
                 return;
             }
 
@@ -288,17 +497,17 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // LÓGICA DE COMPARTILHAMENTO ATUALIZADA
+        // COMPARTILHAMENTO DE CARD PARA STATUS / STORY
         const shareBtn = document.getElementById('share-btn');
         const canvas = document.getElementById('share-canvas');
         const ctx = canvas.getContext('2d');
 
         shareBtn.addEventListener('click', async () => {
-            shareBtn.innerText = "Gerando";
+            shareBtn.innerText = "Gerando...";
             shareBtn.disabled = true;
 
             try {
-                // Background
+                // Fundo Tático
                 ctx.fillStyle = "#05070a";
                 ctx.fillRect(0, 0, 1080, 1920);
                 const grad = ctx.createRadialGradient(540, 960, 0, 540, 960, 1000);
@@ -307,6 +516,7 @@
                 ctx.fillStyle = grad;
                 ctx.fillRect(0, 0, 1080, 1920);
 
+                // Brasão
                 const img = new Image();
                 img.crossOrigin = "anonymous"; 
                 img.src = document.getElementById('brasao-img').src;
@@ -317,43 +527,71 @@
                 ctx.drawImage(img, (1080 - logoW)/2, 350, logoW, logoH);
 
                 ctx.textAlign = "center";
-                ctx.fillStyle = "#D4AF37"; ctx.font = "bold 55px Montserrat"; ctx.fillText("FALTAM", 540, 950);
+                ctx.fillStyle = "#D4AF37"; 
+                ctx.font = "bold 55px Montserrat"; 
+                ctx.fillText("FALTAM", 540, 950);
                 
-                // LÓGICA DE TEXTO DINÂMICO NO CARD
                 let displayValue = dGlobal;
                 let displayUnit = "DIAS";
-                let shareText = `Faltam apenas ${dGlobal} dias para a nossa aula inaugural!`;
+                let shareText = `Faltam apenas ${dGlobal} dias para o fim do nosso CFP PCRR!`;
 
                 if (dGlobal <= 0) {
                     displayValue = hGlobal;
                     displayUnit = "HORAS";
-                    shareText = `Faltam apenas ${hGlobal}h para a nossa aula inaugural!`;
+                    shareText = `Faltam apenas ${hGlobal}h para a conclusão do nosso CFP PCRR!`;
                 }
 
-                ctx.fillStyle = "#ffffff"; ctx.font = "900 320px Montserrat"; ctx.fillText(displayValue, 540, 1250);
-                ctx.fillStyle = "#D4AF37"; ctx.font = "bold 70px Montserrat"; ctx.fillText(displayUnit, 540, 1370);
+                ctx.fillStyle = "#ffffff"; 
+                ctx.font = "900 320px Montserrat"; 
+                ctx.fillText(displayValue, 540, 1250);
+
+                ctx.fillStyle = "#D4AF37"; 
+                ctx.font = "bold 70px Montserrat"; 
+                ctx.fillText(displayUnit, 540, 1370);
                 
-                ctx.fillStyle = "#cbd5e1"; ctx.font = "45px Cinzel"; ctx.fillText("PARA O INÍCIO DA AULA INAUGURAL", 540, 1550);
-                ctx.globalAlpha = 0.2; ctx.font = "28px Montserrat"; ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
+                ctx.fillStyle = "#cbd5e1"; 
+                ctx.font = "45px Cinzel"; 
+                ctx.fillText("PARA O FIM DO CURSO", 540, 1550);
+
+                ctx.globalAlpha = 0.2; 
+                ctx.font = "28px Montserrat"; 
+                ctx.fillText("COMISSÃO OFICIAL DO CADASTRO RESERVA PCRR", 540, 1850);
+                ctx.globalAlpha = 1.0;
 
                 canvas.toBlob(async (blob) => {
-                    const file = new File([blob], 'cfp-status.png', { type: 'image/png' });
+                    const file = new File([blob], 'cfp-fim-do-curso.png', { type: 'image/png' });
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         await navigator.share({
                             files: [file],
-                            title: 'CFP PCRR 2026',
+                            title: 'CFP PCRR - Fim do Curso',
                             text: shareText
                         });
-                    } else { alert("Navegador sem suporte a compartilhamento de imagem."); }
-                    shareBtn.innerText = "Compartilhar no status"; shareBtn.disabled = false;
+                    } else { 
+                        alert("Seu navegador não suporta compartilhamento direto de imagem."); 
+                    }
+                    shareBtn.innerText = "Compartilhar no status"; 
+                    shareBtn.disabled = false;
                 });
-            } catch (err) { alert("Erro ao gerar card."); shareBtn.innerText = "Compartilhar no status"; shareBtn.disabled = false; }
+            } catch (err) { 
+                alert("Erro ao gerar card de status."); 
+                shareBtn.innerText = "Compartilhar no status"; 
+                shareBtn.disabled = false; 
+            }
         });
 
-        // PWA
+        // SUPORTE PWA
         let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-btn').style.display = 'block'; });
-        document.getElementById('install-btn').addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } });
+        window.addEventListener('beforeinstallprompt', (e) => { 
+            e.preventDefault(); 
+            deferredPrompt = e; 
+            document.getElementById('install-btn').style.display = 'block'; 
+        });
+        document.getElementById('install-btn').addEventListener('click', async () => { 
+            if (deferredPrompt) { 
+                deferredPrompt.prompt(); 
+                deferredPrompt = null; 
+            } 
+        });
     </script>
 </body>
 </html>
